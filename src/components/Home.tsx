@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseComponentStyle } from '../styles';
+import { baseComponentStyle } from './styles';
 
 const Home = () => {
     return (

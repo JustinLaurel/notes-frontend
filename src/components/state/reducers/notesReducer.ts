@@ -1,26 +1,27 @@
-import { Note } from "../../../types";
+import notesService from "../../../services/notesService";
 import { isNotesArray } from "../../../validators/noteValidators";
-import { AppDispatch } from "./store";
+import { AppDispatch } from "../store";
 
-const reducer = (state: Note[] = [], action) => {
-    switch(action.type) {
-        case 'INITIALIZE_NOTES': {
-            if (isNotesArray(action.payload)) {
-                return [
-                    ...state,
-                    ...action.payload
-                ];
+const reducer = 
+    (state = [], { type, payload }: { type: string, payload: unknown }) => {
+    switch(type) {
+        case 'notes/initialize': {
+            if (Array.isArray(payload) && isNotesArray(payload)) {
+                return [...payload];
             }
-            return 
+            console.log(`Invalid notes data: ${JSON.stringify(payload)}`);
+            return [...state];
         }
         default: 
-            return state;
+            return [...state];
     }
-}
+};
 
-export const initializeNotes = (notes: Note[]) => (dispatch: AppDispatch) => {
+export const initialize = () => async (dispatch: AppDispatch) => {
+    const notes = await notesService.getAll();
+    console.log(`notes=${JSON.stringify(notes)}`);
     dispatch({
-        type: 'INITIALIZE_NOTES',
+        type: 'notes/initialize',
         payload: notes
     });
 };

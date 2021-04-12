@@ -4,7 +4,7 @@ import { Note } from '../types';
 export const isNote = (value: any): value is Note => {
     if (!value.content || !isString(value.content)) {
         return false;
-    } else if (!value.date || !isString(value.date) || !isDate(value.date)) {
+    } else if (!value.created || !isString(value.created) || !isDate(value.created)) {
         return false;
     }
     return true;
@@ -19,5 +19,6 @@ const isString = (value: unknown): value is string => {
 };
 
 const isDate = (value: string): boolean => {
+    console.log(`isDate=${Date.parse(value)}`);
     return Boolean(Date.parse(value));
 };
