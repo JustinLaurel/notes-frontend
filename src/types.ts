@@ -1,4 +1,10 @@
 export interface Note {
+    _id: string,
     content: string,
-    date: string,
+    created: string,
+}
+
+export interface NewNote {
+    content: string,
+    created: string
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { baseComponentStyle } from './styles';
+import { baseComponentStyle } from './utils/styles';
 
 const NavBar = () => {
     const linkStyle = {

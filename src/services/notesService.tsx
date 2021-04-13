@@ -1,30 +1,25 @@
 import axios from 'axios';
-import { Note } from '../types';
-import { isNote } from '../validators/noteValidators';
+import { Note, NewNote } from '../types';
 
 const baseUrl = 'http://localhost:3001/notes';
 
 const getAll = async () => {
-    try {
-        const { data: notes } = await axios.get<Note[]>(baseUrl);
-        return notes;
-    } catch(e) {
-        console.log(`Error retrieving notes: ${e.message}`);
-    }
+    const { data: notes } = await axios.get<Note[]>(baseUrl);
+    return notes;
 };
 
-const addNew = async (note: Note) => {
-    try {
-        if (!isNote(note)) throw new Error('Incorrect or missing note data');
+const addNew = async (note: NewNote) => {
+    const { data } = await axios.post<Note>(baseUrl, note);
+    return data;
+};
 
-        const savedNote = await axios.post<Note>(baseUrl, note);
-        return savedNote;
-    } catch(e) {
-        console.log(`Error adding notes: ${e.message}`);
-    }
+const remove = async (id: string) => {
+    const deletedNote = await axios.delete(`${baseUrl}/${id}`);
+    return deletedNote;
 };
 
 export default {
     getAll,
-    addNew
+    addNew,
+    remove
 };

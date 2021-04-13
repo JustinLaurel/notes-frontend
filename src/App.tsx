@@ -7,11 +7,12 @@ import {
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { initialize as initializeNotes } from './components/state/reducers/notesReducer';
+import { initializeNotes } from './components/state/reducers/notesReducer';
 
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import NotesList from './components/notes/NotesList';
+import NoteForm from './components/notes/NoteForm';
 
 function App() {
     const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
             <Switch>
                 <Route path='/notes'>
                     <NotesList />
+                    <NoteForm />
                 </Route>
                 <Route path='/'>
                     <Home />
