@@ -1,10 +1,12 @@
 import notesService from "../../../services/notesService";
 import { Note, NewNote } from "../../../types";
-import { isNoteAndExists, isNotesArray, isStringAndExists } from "../../../validators/noteValidators";
+import { isNoteAndExists, isNotesArray } from "../../../validators/noteValidators";
+import parser from '../../../validators/parsers';
 import { AppDispatch } from "../store";
+import { ActionPayload } from '../../../types';
 
 const reducer = 
-    (state = [], { type, payload }: { type: string, payload: unknown }) => {
+    (state = [], { type, payload }: ActionPayload) => {
     switch(type) {
         case 'notes/initialize': {
             if (Array.isArray(payload) && isNotesArray(payload)) {
@@ -15,7 +17,7 @@ const reducer =
             }
         }
         case 'notes/remove': {
-            if (isStringAndExists(payload)) {
+            if (parser.isStringAndExists(payload)) {
                 const id = payload;
                 const newState: Note[] = state.filter((note: Note) => note._id !== id);
                 return newState;

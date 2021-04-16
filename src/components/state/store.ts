@@ -1,9 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import notesReducer from './reducers/notesReducer';
+import loginReducer from './reducers/loginReducer';
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
-    notes: notesReducer
+    notes: notesReducer,
+    login: loginReducer,
 });
 
 const store = createStore(

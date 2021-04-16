@@ -14,3 +14,10 @@ export const useField = (type: string) => {
         clearField
     };
 };
+
+export interface Field {
+    type: string,
+    value: string,
+    onChange: (event: React.FormEvent<HTMLInputElement>) => void,
+    clearField: () => void
+}

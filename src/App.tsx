@@ -8,16 +8,20 @@ import {
 import { useDispatch } from 'react-redux';
 
 import { initializeNotes } from './components/state/reducers/notesReducer';
+import { initializeTokenToState } from './components/state/reducers/loginReducer';
 
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import NotesList from './components/notes/NotesList';
 import NoteForm from './components/notes/NoteForm';
+import LoginForm from './components/LoginForm';
 
 function App() {
     const dispatch = useDispatch();
+    
     useEffect(() => {
         dispatch(initializeNotes());
+        dispatch(initializeTokenToState());
     }, [dispatch]);
 
     return (
@@ -31,7 +35,8 @@ function App() {
                 <Route path='/'>
                     <Home />
                 </Route>
-            </Switch>
+            </Switch> <br />
+            <LoginForm />
         </Router>
     );
 }

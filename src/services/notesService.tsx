@@ -14,8 +14,8 @@ const addNew = async (note: NewNote) => {
 };
 
 const remove = async (id: string) => {
-    const deletedNote = await axios.delete(`${baseUrl}/${id}`);
-    return deletedNote;
+    const response = await axios.delete(`${baseUrl}/${id}`);
+    return response; //console log later to see what is data structure
 };
 
 export default {
