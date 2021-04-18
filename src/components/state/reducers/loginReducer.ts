@@ -24,8 +24,19 @@ const reducer = (state = {}, { type, payload }: ActionPayload) => {
             }
             return {...state};
         }
+        case 'login/logout': {
+            localStorage.removeItem('tokenData');
+            return {};
+        }
         default: return {...state};
     }
+};
+
+export const logout = () => (dispatch: AppDispatch) => {
+    dispatch({
+        type: 'login/logout',
+        payload: {}
+    });
 };
 
 export const initializeTokenToState = () => (dispatch: AppDispatch) => {

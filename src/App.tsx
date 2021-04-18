@@ -14,7 +14,8 @@ import NavBar from './components/NavBar';
 import Home from './components/Home';
 import NotesList from './components/notes/NotesList';
 import NoteForm from './components/notes/NoteForm';
-import LoginForm from './components/LoginForm';
+import LoginForm from './components/login/LoginForm';
+import LoginBar from './components/login/LoginBar'; 
 
 function App() {
     const dispatch = useDispatch();
@@ -27,6 +28,7 @@ function App() {
     return (
         <Router>
             <NavBar />
+            <LoginBar /> 
             <Switch>
                 <Route path='/notes'>
                     <NotesList />
@@ -35,7 +37,7 @@ function App() {
                 <Route path='/'>
                     <Home />
                 </Route>
-            </Switch> <br />
+            </Switch> <br /> <br />
             <LoginForm />
         </Router>
     );

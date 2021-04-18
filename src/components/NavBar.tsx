@@ -7,8 +7,13 @@ const NavBar = () => {
         paddingRight: '9px',
     };
 
+    const baseWithInline = {
+        ...baseComponentStyle,
+        "display": "inline"
+    };
+
     return (
-        <div style={baseComponentStyle}>
+        <div style={baseWithInline}>
             <Link to='/' style={linkStyle}>Home</Link>
             <Link to='/notes' style={linkStyle}>Notes</Link>
             <Link to='/user' style={linkStyle}>User</Link>

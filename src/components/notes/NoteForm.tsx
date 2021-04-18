@@ -14,10 +14,10 @@ const NoteForm = () => {
     };
 
     return (
-        <>
+        <form onSubmit={addNote}>
             <input {...noteInput} style={baseComponentStyle}></input>
-            <button onClick={addNote}>save</button>
-        </>
+            <button>save</button>
+        </form>
     );
 };
 
