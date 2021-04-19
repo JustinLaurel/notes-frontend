@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Note } from '../../types';
 import { baseComponentStyle } from '../utils/styles';
-import { RootState } from '../state/store';
-import { removeNote } from '../state/reducers/notesReducer';
+import { RootState } from '../../state/store';
+import { removeNote } from '../../state/reducers/notes';
 
 const NotesList = () => {
     const notes: Note[] = useSelector((state: RootState) => state.notes);

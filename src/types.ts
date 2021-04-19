@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface Note {
     _id: string,
     content: string,
@@ -30,4 +32,21 @@ export interface User {
     username: string,
     name: string,
     passwordHash: string
+}
+
+export interface SubmitHandler {
+    handleSubmit: (e: React.FormEvent) => void
+}
+
+export interface LoginFormViewFields {
+    handleLogin: (e: React.FormEvent) => void;
+    username: UseField,
+    password: UseField,
+}
+
+export interface UseField {
+    type: string,
+    value: string,
+    onChange: (event: React.FormEvent<HTMLInputElement>) => void,
+    clearField: () => void
 }

@@ -1,9 +1,9 @@
-import notesService from "../../../services/notesService";
-import { Note, NewNote } from "../../../types";
-import { isNoteAndExists, isNotesArray } from "../../../validators/noteValidators";
-import parser from '../../../validators/parsers';
+import notesService from "../../services/notesService";
+import { Note, NewNote } from "../../types";
+import { isNoteAndExists, isNotesArray } from "../../validators/noteValidators";
+import parser from '../../validators/parsers';
 import { AppDispatch } from "../store";
-import { ActionPayload } from '../../../types';
+import { ActionPayload } from '../../types';
 
 const reducer = 
     (state = [], { type, payload }: ActionPayload) => {

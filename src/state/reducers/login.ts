@@ -1,13 +1,10 @@
-import { TokenData, ActionPayload } from "../../../types";
-import { parseCredentials, parseTokenData, isTokenData } from "../../../validators/loginValidators";
+import { TokenData, ActionPayload } from "../../types";
+import { parseCredentials, parseTokenData, isTokenData } from "../../validators/loginValidators";
 import { AppDispatch } from "../store";
-import loginService from '../../../services/loginService';
-// import { setNotification } from './notificationsReducer';
-// import { useDispatch } from 'react-redux';
+import loginService from '../../services/loginService';
 
 const reducer = (state = {}, { type, payload }: ActionPayload) => {
     const localStorage = window.localStorage;
-    // const dispatch = useDispatch();
 
     switch(type) {
         case 'login/init': {
@@ -19,7 +16,6 @@ const reducer = (state = {}, { type, payload }: ActionPayload) => {
                 localStorage.setItem('tokenData', JSON.stringify(payload));
                 return {...payload};
             } else {
-                // dispatch(setNotification(`Login failed unexpectedly. Please try again`));
                 console.error(`Missing or invalid token after login, cannot set to localStorage`);
             }
             return {...state};
@@ -33,13 +29,16 @@ const reducer = (state = {}, { type, payload }: ActionPayload) => {
 };
 
 export const logout = () => (dispatch: AppDispatch) => {
-    dispatch({
-        type: 'login/logout',
-        payload: {}
-    });
+    const name = getStoredToken()?.name;
+    if (name) {
+        dispatch({
+            type: 'login/logout',
+            payload: {}
+        });
+    }
 };
 
-export const initializeTokenToState = () => (dispatch: AppDispatch) => {
+export const saveTokenToState = () => (dispatch: AppDispatch) => {
     const user = getStoredToken();
     if (user) {
         dispatch({
@@ -50,18 +49,14 @@ export const initializeTokenToState = () => (dispatch: AppDispatch) => {
 };
 
 export const login = (loginInfo: unknown) => async (dispatch: AppDispatch) => {
-    try {
-        const credentials = parseCredentials(loginInfo);
-        const token = await loginService.login(credentials);
-        console.log(`token=${JSON.stringify(token)}`);
-        dispatch({
-            type: 'login/storeToken',
-            payload: token
-        });
-        // dispatch(setNotification(`Login successful!`));
-    } catch(e) {
-        // dispatch(setNotification(e.message)); //NEED NOTIFICATION REDUCER
-    }
+    const credentials = parseCredentials(loginInfo);
+    const token = await loginService.login(credentials);
+    if (!isTokenData(token)) throw new Error(`Invalid username or password`);
+    dispatch({
+        type: 'login/storeToken',
+        payload: token
+    });
+    return token;
 };
 
 export const getStoredToken = (): TokenData | null => {

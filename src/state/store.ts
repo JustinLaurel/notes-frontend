@@ -1,13 +1,16 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import notesReducer from './reducers/notesReducer';
-import loginReducer from './reducers/loginReducer';
-import loginFormReducer from './reducers/loginFormReducer';
+import notesReducer from './reducers/notes';
+import loginReducer from './reducers/login';
+import loginFormReducer from './reducers/loginForm';
+import notificationReducer from './reducers/notification';
+
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
     notes: notesReducer,
     login: loginReducer,
-    loginFormVisible: loginFormReducer
+    loginFormVisible: loginFormReducer,
+    notification: notificationReducer
 });
 
 const store = createStore(

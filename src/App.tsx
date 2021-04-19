@@ -7,28 +7,29 @@ import {
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { initializeNotes } from './components/state/reducers/notesReducer';
-import { initializeTokenToState } from './components/state/reducers/loginReducer';
+import { initializeNotes } from './state/reducers/notes';
+import { saveTokenToState } from './state/reducers/login';
 
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import NotesList from './components/notes/NotesList';
 import NoteForm from './components/notes/NoteForm';
 import LoginForm from './components/login/LoginForm';
-import LoginBar from './components/login/LoginBar'; 
+import UserBar from './components/login/UserBar';
+import Notification from './components/Notification';
 
 function App() {
     const dispatch = useDispatch();
-    
+
     useEffect(() => {
         dispatch(initializeNotes());
-        dispatch(initializeTokenToState());
+        dispatch(saveTokenToState());
     }, [dispatch]);
 
     return (
         <Router>
             <NavBar />
-            <LoginBar /> 
+            <UserBar /> 
             <Switch>
                 <Route path='/notes'>
                     <NotesList />
@@ -39,6 +40,7 @@ function App() {
                 </Route>
             </Switch> <br /> <br />
             <LoginForm />
+            <Notification />
         </Router>
     );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { createNote } from '../state/reducers/notesReducer';
+import { createNote } from '../../state/reducers/notes';
 import { useField } from '../utils/hooks';
 import { baseComponentStyle } from '../utils/styles';
 

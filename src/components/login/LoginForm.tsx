@@ -1,16 +1,14 @@
 import React from 'react';
-import { useField, Field } from '../utils/hooks';
+import { useField } from '../utils/hooks';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../state/reducers/loginReducer';
+import { login } from '../../state/reducers/login';
 import { baseComponentStyle } from '../utils/styles';
-import { RootState } from '../state/store';
-import { toggleLoginForm } from '../state/reducers/loginFormReducer';
+import { RootState } from '../../state/store';
+import { toggleLoginForm } from '../../state/reducers/loginForm';
+import { LoginFormViewFields, TokenData } from '../../types';
+import { setNotification } from '../../state/reducers/notification';
+import { isTokenData } from '../../validators/loginValidators';
 
-interface LoginFormViewFields {
-    handleLogin: (e: React.FormEvent) => void;
-    username: Field,
-    password: Field,
-}
 const LoginFormView = ({ handleLogin, username, password }: LoginFormViewFields) => {
     return (
         <form onSubmit={handleLogin} style={baseComponentStyle}>
@@ -28,15 +26,32 @@ const LoginForm = () => {
     const username = useField('text');
     const password = useField('password');    
 
-    const handleLogin = (e: React.FormEvent) => {
-        e.preventDefault();
-        dispatch(login({
-            username: username.value,
-            password: password.value
-        }));
+    const clearInputFields = () => {
         username.clearField();
         password.clearField();
-        dispatch(toggleLoginForm());
+    };
+
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault();
+        new Promise((resolve) => {
+            dispatch(setNotification(`logging in...`, 50000));
+            setTimeout(() => setNotification(`Login timed out, please try again`), 5000);
+            const token = dispatch(login({
+                username: username.value,
+                password: password.value
+            })) as unknown as TokenData;
+            resolve(token);
+        })
+        .then((token) => {
+            if (isTokenData(token)) {
+                dispatch(setNotification(`${token.name} logged in`));
+                clearInputFields();
+                dispatch(toggleLoginForm());
+            }
+        })
+        .catch((e) => {
+            dispatch(setNotification(`${e.message}`, 5000));
+        });
     };
 
     return (

@@ -3,7 +3,7 @@ import React from 'react';
 interface VisibilityToggler {
     toggleVisibility: () => void 
 }
-const ToggleLoginFormButton = ({ toggleVisibility }: VisibilityToggler) => {
+const LoginButton = ({ toggleVisibility }: VisibilityToggler) => {
     const handleToggle = (e: React.FormEvent) => {
         e.preventDefault();
         toggleVisibility();
@@ -14,4 +14,4 @@ const ToggleLoginFormButton = ({ toggleVisibility }: VisibilityToggler) => {
     );
 };
 
-export default ToggleLoginFormButton;
+export default LoginButton;

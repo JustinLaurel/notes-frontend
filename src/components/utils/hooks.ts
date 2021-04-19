@@ -15,9 +15,26 @@ export const useField = (type: string) => {
     };
 };
 
-export interface Field {
-    type: string,
-    value: string,
-    onChange: (event: React.FormEvent<HTMLInputElement>) => void,
-    clearField: () => void
-}
+export const useTimeout = () => {
+    let timeoutId: null | NodeJS.Timeout = null;
+    // const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
+
+    const set = (func: unknown, timeout: number) => {
+        if (func instanceof Function) {
+            const id = setTimeout(func, timeout) as unknown as NodeJS.Timeout;
+            timeoutId = id;
+        }
+    };
+    
+    const clear = () => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+            timeoutId = null;
+        }
+    };
+
+    return {
+        set,
+        clear
+    };
+};
