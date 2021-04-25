@@ -5,13 +5,23 @@ import { getStoredToken, logout } from '../../state/reducers/login';
 import { setNotification } from '../../state/reducers/notification';
 import { RootState } from '../../state/store';
 import { SubmitHandler } from '../../types';
+import { baseMargins } from '../utils/styles';
+import { Button } from '@chakra-ui/react';
 
 const LogoutButtonView = ({ handleSubmit }: SubmitHandler) => {
     const buttonStyle = {
-        "display": "inline"
+        ...baseMargins,
+        "size": "xs",
+        "fontSize": "12px",
+        "borderRadius": "6px",
+        "color": "black",
+        "bg": "red.600",
+        "_hover": { 
+            bg: "red.800",
+        },
     };
 
-    return <button onClick={handleSubmit} style={buttonStyle}>logout</button>;
+    return <Button onClick={handleSubmit} {...buttonStyle}>logout</Button>;
 };
 
 const LogoutButton = () => {

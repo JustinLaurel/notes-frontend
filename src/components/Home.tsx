@@ -1,15 +1,16 @@
+import { Box } from '@chakra-ui/react';
 import React from 'react';
-import { baseComponentStyle } from './utils/styles';
+import { baseMargins } from './utils/styles';
 
 const Home = () => {
     return (
-        <div style={baseComponentStyle}>
+        <Box {...baseMargins}>
             <h3><i>Notes app, by Chiew Weng Keat</i></h3>
             <p>
                 &emsp; total notes stored: <br />
                 &emsp; total users:
             </p>
-        </div>
+        </Box>
     );
 };
 

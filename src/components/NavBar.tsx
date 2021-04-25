@@ -1,24 +1,35 @@
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { baseComponentStyle } from './utils/styles';
+import { baseMargins } from './utils/styles';
 
 const NavBar = () => {
-    const linkStyle = {
-        paddingRight: '9px',
-    };
-
     const baseWithInline = {
-        ...baseComponentStyle,
-        "display": "inline"
+        ...baseMargins,
+        "separator": "-",
+        "fontWeight": "medium",
+        "fontSize": "25px",
+        "fontFamily": "flexa",
     };
 
     return (
-        <div style={baseWithInline}>
-            <Link to='/' style={linkStyle}>Home</Link>
-            <Link to='/notes' style={linkStyle}>Notes</Link>
-            <Link to='/user' style={linkStyle}>User</Link>
-            <Link to='/about' style={linkStyle}>About</Link>
-        </div>
+        <Breadcrumb {...baseWithInline}>
+            <BreadcrumbItem>
+                <BreadcrumbLink as={Link} to='/' d="inline">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+
+            <BreadcrumbItem>
+                <BreadcrumbLink as={Link} to='/notes' d="inline">Notes</BreadcrumbLink>
+            </BreadcrumbItem>
+
+            <BreadcrumbItem>
+                <BreadcrumbLink as={Link} to='/user' d="inline">User</BreadcrumbLink>
+            </BreadcrumbItem>
+
+            <BreadcrumbItem>
+                <BreadcrumbLink as={Link} to='/about' d="inline">About</BreadcrumbLink>
+            </BreadcrumbItem>
+        </Breadcrumb>
     );
 };
 

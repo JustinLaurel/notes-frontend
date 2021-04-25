@@ -1,3 +1,4 @@
-export const baseComponentStyle = {
-    marginLeft: '10px'
+export const baseMargins = {
+    "m": 1,
+    "ml": 6
 };

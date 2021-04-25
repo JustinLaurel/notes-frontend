@@ -2,20 +2,33 @@ import React from 'react';
 import { useField } from '../utils/hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../state/reducers/login';
-import { baseComponentStyle } from '../utils/styles';
+import { baseMargins } from '../utils/styles';
 import { RootState } from '../../state/store';
 import { toggleLoginForm } from '../../state/reducers/loginForm';
 import { LoginFormViewFields, TokenData } from '../../types';
 import { setNotification } from '../../state/reducers/notification';
 import { isTokenData } from '../../validators/loginValidators';
 
+import { Button, FormControl, Input } from '@chakra-ui/react';
+
 const LoginFormView = ({ handleLogin, username, password }: LoginFormViewFields) => {
+    const inputStyle = {
+        "size": "xs",
+        "w": 150,
+        "variant": "filled",
+    };
+
+    const buttonStyle = {
+        "size": "xs",
+        "bgColor": "blue.300",
+    };
+
     return (
-        <form onSubmit={handleLogin} style={baseComponentStyle}>
-            username: <input {...username} /> <br />
-            password: <input {...password} /> <br />
-            <button>login</button>
-        </form>
+        <FormControl as="form" onSubmit={handleLogin} {...baseMargins}>
+            username: <Input {...username} {...inputStyle} /> <br />
+            password: <Input {...password} {...inputStyle}/> <br />
+            <Button {...buttonStyle}>login</Button>
+        </FormControl>
     );
 };
 

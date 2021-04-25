@@ -6,6 +6,7 @@ import {
     Switch
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { Box, ChakraProvider } from '@chakra-ui/react';
 
 import { initializeNotes } from './state/reducers/notes';
 import { saveTokenToState } from './state/reducers/login';
@@ -27,21 +28,25 @@ function App() {
     }, [dispatch]);
 
     return (
-        <Router>
-            <NavBar />
-            <UserBar /> 
-            <Switch>
-                <Route path='/notes'>
-                    <NotesList />
-                    <NoteForm />
-                </Route>
-                <Route path='/'>
-                    <Home />
-                </Route>
-            </Switch> <br /> <br />
-            <LoginForm />
-            <Notification />
-        </Router>
+        <ChakraProvider>
+            <Router>
+                <Box>
+                    <NavBar />
+                    <UserBar />
+                    <Switch>
+                        <Route path='/notes'>
+                            <NotesList />
+                            <NoteForm />
+                        </Route>
+                        <Route path='/'>
+                            <Home />
+                        </Route>
+                    </Switch> <br /> <br />
+                    <LoginForm />
+                    <Notification />
+                </Box>
+            </Router>
+        </ChakraProvider>
     );
 }
 
