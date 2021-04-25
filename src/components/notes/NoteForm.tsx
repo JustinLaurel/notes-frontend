@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { createNote } from '../../state/reducers/notes';
-import { useField } from '../utils/hooks';
+import { useField } from '../../utils/hooks';
 
 import { Input, Button, FormControl } from "@chakra-ui/react";
 import { UseField } from '../../types';

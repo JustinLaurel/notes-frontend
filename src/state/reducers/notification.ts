@@ -1,4 +1,4 @@
-import { useTimeout } from "../../components/utils/hooks";
+import { useTimeout } from "../../utils/hooks";
 import { AppDispatch } from "../store";
 
 interface NotificationPayload {
@@ -10,10 +10,10 @@ interface NotificationPayload {
 
 const reducer = (state = '', { type, payload }: NotificationPayload) => {
     switch(type) {
-        case 'notification/set': {
+        case 'notification/toast/set': {
             return payload.message;
         }
-        case 'notification/clear': {
+        case 'notification/toast/clear': {
             return '';
         }
         default: return state + '';
@@ -29,20 +29,20 @@ export const setNotification = (message: string, notifyFor = 4000) => (dispatch:
     timeout.clear(); //This line solves the aforementioned problem
 
     dispatch({
-        type: 'notification/set',
+        type: 'notification/toast/set',
         payload: {
             message
         }
     });
 
     timeout.set(() => dispatch({
-        type: 'notification/clear'
+        type: 'notification/toast/clear'
     }), notifyFor);    
 };
 
 export const clearNotification = () => (dispatch: AppDispatch) => {
     dispatch({
-        type: 'notification/clear',
+        type: 'notification/toast/clear',
     });
 };
 

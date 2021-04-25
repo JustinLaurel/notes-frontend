@@ -56,11 +56,11 @@ export const initializeNotes = () => async (dispatch: AppDispatch) => {
 
 export const removeNote = (id: string) => async (dispatch: AppDispatch) => {
     try {
-        await notesService.remove(id);
         dispatch({
             type: 'notes/remove',
             payload: id
         });
+        await notesService.remove(id);
     } catch(e) {
         console.log(`Error deleting note: ${e.message}`);
     }

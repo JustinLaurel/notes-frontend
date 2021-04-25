@@ -1,7 +1,7 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { baseMargins } from './utils/styles';
+import { baseMargins } from '../utils/styles';
 
 const NavBar = () => {
     const baseWithInline = {

@@ -1,50 +1,25 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Note } from '../../types';
-import { baseMargins } from '../utils/styles';
+import { baseMargins } from '../../utils/styles';
 import { RootState } from '../../state/store';
-import { removeNote } from '../../state/reducers/notes';
-import { IconButton, Grid, Center } from '@chakra-ui/react';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { Grid, Center, Box } from '@chakra-ui/react';
 
-const DeleteButtonView = ({ deleteNote }: { deleteNote: (e: React.FormEvent) => void }) => {
-    const buttonStyle = {
-        "color": "black",
-        "borderRadius": "full",
-        "bgColor": "red.500",
-        "size": "sm",
-        "_hover": {
-            "color": "white",
-            "bgColor": "red.900"
-        },
-        "title": "delete",
-        "display": "flex",
-        "justify-content": "center",
-        "align-items": "center"
-    };
+import DeleteButton from './DeleteButton';
 
+const NoteContentView = ({ content, _id }: { content: string, _id: string }) => {
     return (
-        <IconButton
-            {...buttonStyle}
-            aria-label='delete'
-            icon={<DeleteIcon/>}
-            onClick={deleteNote}
-            >delete
-        </IconButton>
+        <Box id={_id}>
+            {content}
+        </Box>
     );
 };
 
 const NotesList = () => {
     const notes: Note[] = useSelector((state: RootState) => state.notes);
-    const dispatch = useDispatch();
-
-    const deleteNote = (id: string) => (e: React.FormEvent) => {
-        e.preventDefault();
-        dispatch(removeNote(id));
-    };
 
     const gridStyle = {
-        "templateColumns": "minmax(auto, 400px) 30px",
+        "templateColumns": "minmax(auto, 450px) 30px",
         "rowGap": "5px"
     };
 
@@ -53,11 +28,10 @@ const NotesList = () => {
             {notes.map(note => {
                 return (
                     <React.Fragment key={note._id}>
-                        <p>
-                            {note.content}
-                        </p>
+                        <NoteContentView content={note.content} _id={note._id}/>
                         <Center>
-                            <DeleteButtonView deleteNote={deleteNote(note._id)}/>
+                            <DeleteButton 
+                                noteId={note._id} />
                         </Center>
                     </React.Fragment>
                 );

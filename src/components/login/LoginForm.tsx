@@ -1,8 +1,8 @@
 import React from 'react';
-import { useField } from '../utils/hooks';
+import { useField } from '../../utils/hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../state/reducers/login';
-import { baseMargins } from '../utils/styles';
+import { baseMargins } from '../../utils/styles';
 import { RootState } from '../../state/store';
 import { toggleLoginForm } from '../../state/reducers/loginForm';
 import { LoginFormViewFields, TokenData } from '../../types';

@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
-import { baseMargins } from './utils/styles';
+import { baseMargins } from '../utils/styles';
 
 const Home = () => {
     return (
