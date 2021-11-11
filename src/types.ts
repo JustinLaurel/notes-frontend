@@ -35,18 +35,24 @@ export interface User {
 }
 
 export interface SubmitHandler {
-    handleSubmit: (e: React.FormEvent) => void
+    handleSubmit(e: React.FormEvent): void
 }
 
 export interface LoginFormViewFields {
-    handleLogin: (e: React.FormEvent) => void;
+    handleLogin(e: React.FormEvent): void;
     username: UseField,
     password: UseField,
+    showSpinner: boolean,
 }
 
 export interface UseField {
     type: string,
     value: string,
-    onChange: (event: React.FormEvent<HTMLInputElement>) => void,
-    clearField: () => void
+    onChange(event: React.FormEvent<HTMLInputElement>): void,
+    clearField(): void
+}
+
+export interface TimeoutObject {
+    set(func: unknown, timeout: number): void,
+    clear(): void;
 }

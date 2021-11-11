@@ -9,7 +9,7 @@ const reducer =
     (state = [], { type, payload }: ActionPayload) => {
     switch(type) {
         case 'notes/initialize': {
-            if (Array.isArray(payload) && isNotesArray(payload)) {
+            if (isNotesArray(payload)) {
                 return [...payload];
             } else {
                 console.log(`Invalid notes data: ${JSON.stringify(payload)}`);

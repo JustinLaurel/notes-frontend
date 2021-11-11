@@ -22,11 +22,7 @@ const reducer = (state = '', { type, payload }: NotificationPayload) => {
 
 export const setNotification = (message: string, notifyFor = 4000) => (dispatch: AppDispatch) => {
     const timeout = useTimeout();
-
-    //If setTimedNotification gets called a second time before the first call's setTimeout's 
-    // function executes, the second notification will be prematurely cleared by the first
-    // call
-    timeout.clear(); //This line solves the aforementioned problem
+    console.log(`setNotification called, message=${message}`);
 
     dispatch({
         type: 'notification/toast/set',

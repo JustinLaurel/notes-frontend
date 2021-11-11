@@ -1,35 +1,53 @@
 import { AppDispatch } from "../store";
 
-const reducer = (state = false, { type }: { type: string }) => {
+const reducer = (state = {form: false, spinner: false}, { type }: { type: string }) => {
     switch(type) {
-        case 'loginFormVisibility/toggle': {
-            return !state;
+        case 'loginForm/toggle': {
+            return {...state, form: !state.form};
         }
-        case 'loginFormVisibility/show': {
-            return true;
+        case 'loginForm/show': {
+            return {...state, form: true};
         }
-        case 'loginFormVisibility/hide': {
-            return false;
+        case 'loginForm/hide': {
+            return {...state, form: false};
         }
-        default: return state;
+        case 'loginForm/spinner/show': {
+            return {...state, spinner: true};
+        }
+        case 'loginForm/spinner/hide': {
+            return {...state, spinner: false};
+        }
+        default: return {...state};
     }
 };
 
 export const toggleLoginForm = () => (dispatch: AppDispatch) => {
     dispatch({
-        type: 'loginFormVisibility/toggle'
+        type: 'loginForm/toggle'
     });
 };
 
 export const showLoginForm = () => (dispatch: AppDispatch) => {
     dispatch({
-        type: 'loginFormVisibility/show'
+        type: 'loginForm/show'
     });
 };
 
 export const hideLoginForm = () => (dispatch: AppDispatch) => {
     dispatch({
-        type: 'loginFormVisibility/hide'
+        type: 'loginForm/hide'
+    });
+};
+
+export const showLoginSpinner = () => (dispatch: AppDispatch) => {
+    dispatch({
+        type: 'loginForm/spinner/show'
+    });
+};
+
+export const hideLoginSpinner = () => (dispatch: AppDispatch) => {
+    dispatch({
+        type: 'loginForm/spinner/hide'
     });
 };
 

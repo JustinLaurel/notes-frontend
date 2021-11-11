@@ -6,15 +6,15 @@ import notificationReducer from './reducers/notification';
 
 import thunk from 'redux-thunk';
 
-const rootReducer = combineReducers({
+const root = combineReducers({
     notes: notesReducer,
     login: loginReducer,
-    loginFormVisible: loginFormReducer,
+    loginForm: loginFormReducer,
     notification: notificationReducer
 });
 
 const store = createStore(
-    rootReducer,
+    root,
     applyMiddleware(thunk)
 );
 

@@ -25,8 +25,8 @@ export const isNoteAndExists = (value: any): boolean => {
     return true;
 };
 
-export const isNotesArray = (value: unknown[]): value is Note[] => {
-    return value.every(isNote);
+export const isNotesArray = (value: unknown): value is Note[] => {
+    return Array.isArray(value) && value.every(isNote);
 };
 
 const isDate = (value: string): boolean => {
