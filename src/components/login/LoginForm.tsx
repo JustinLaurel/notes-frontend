@@ -75,25 +75,18 @@ const LoginForm = () => {
         timeout.set(dispatches, 5000);
     };
 
-    // const notifyIfFailed = (timeout: {
-    //     set: (func: unknown, timeout: number) => void,
-    //     clear: () => void;
-    // }) => {
-    //     const dispatches = () => {
-    //         dispatch(setNotification(`Login timed out, please try again`));
-    //         dispatch(hideLoginSpinner());
-    //     };
-    //     timeout.set(dispatches, 5000);
-    // };
-
+    const clearNotificationsAndSpinner = (timeout: TimeoutObject) => {
+        timeout.clear();
+        dispatch(hideLoginSpinner());
+    };
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        const timeout = useTimeout();
+        const notification = useTimeout();
 
         new Promise((resolve) => {
             dispatch(showLoginSpinner());
-            notifyIfFailed(timeout);
+            notifyIfFailed(notification);
 
             const token = dispatch(login({
                 username: username.value,
@@ -104,14 +97,14 @@ const LoginForm = () => {
         })
         .then((token) => {
             if (isTokenData(token)) {
-                timeout.clear();
-                dispatch(hideLoginSpinner());
+                clearNotificationsAndSpinner(notification);
                 dispatch(setNotification(`${token.name} logged in`));
                 clearInputFields();
                 dispatch(toggleLoginForm());
             }
         })
         .catch((e) => {
+            clearNotificationsAndSpinner(notification);
             dispatch(setNotification(`${e.message}`, 5000));
         });
     };

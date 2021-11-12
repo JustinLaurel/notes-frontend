@@ -51,7 +51,10 @@ export const saveTokenToState = () => (dispatch: AppDispatch) => {
 export const login = (loginInfo: unknown) => async (dispatch: AppDispatch) => {
     const credentials = parseCredentials(loginInfo);
     const token = await loginService.login(credentials);
-    if (!isTokenData(token)) throw new Error(`Invalid username or password`);
+
+    if (!isTokenData(token)) {
+        throw new Error(`Invalid username or password`);
+    }
     dispatch({
         type: 'login/storeToken',
         payload: token

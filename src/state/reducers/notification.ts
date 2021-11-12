@@ -22,7 +22,6 @@ const reducer = (state = '', { type, payload }: NotificationPayload) => {
 
 export const setNotification = (message: string, notifyFor = 4000) => (dispatch: AppDispatch) => {
     const timeout = useTimeout();
-    console.log(`setNotification called, message=${message}`);
 
     dispatch({
         type: 'notification/toast/set',

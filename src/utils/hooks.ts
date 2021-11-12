@@ -23,12 +23,10 @@ export const useTimeout = () => {
         if (func instanceof Function) {
             const id = setTimeout(func, timeout) as unknown as NodeJS.Timeout;
             timeoutId = id;
-            console.log(`setTimeout called, timeoutId=${timeoutId}`);
         }
     };
     
     const clear = () => {
-        console.log(`useTimeout.clear called, timeoutId=${timeoutId}`);
         if (timeoutId) {
             clearTimeout(timeoutId);
             timeoutId = null;
