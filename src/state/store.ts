@@ -2,7 +2,6 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import notesReducer from './reducers/notes';
 import loginReducer from './reducers/login';
 import loginFormReducer from './reducers/loginForm';
-import notificationReducer from './reducers/notification';
 
 import thunk from 'redux-thunk';
 
@@ -10,7 +9,6 @@ const root = combineReducers({
     notes: notesReducer,
     login: loginReducer,
     loginForm: loginFormReducer,
-    notification: notificationReducer
 });
 
 const store = createStore(

@@ -17,7 +17,6 @@ import NotesList from './components/notes/NotesList';
 import NoteForm from './components/notes/NoteForm';
 import LoginForm from './components/login/LoginForm';
 import UserBar from './components/login/UserBar';
-import Notification from './components/Notification';
 
 function App() {
     const dispatch = useDispatch();
@@ -43,7 +42,6 @@ function App() {
                         </Route>
                     </Switch> <br /> <br />
                     <LoginForm />
-                    <Notification />
                 </Box>
             </Router>
         </ChakraProvider>

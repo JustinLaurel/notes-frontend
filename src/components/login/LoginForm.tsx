@@ -6,10 +6,10 @@ import { baseMargins } from '../../utils/styles';
 import { RootState } from '../../state/store';
 import { hideLoginSpinner, showLoginSpinner, toggleLoginForm } from '../../state/reducers/loginForm';
 import { LoginFormViewFields, TimeoutObject, TokenData } from '../../types';
-import { setNotification } from '../../state/reducers/notification';
 import { isTokenData } from '../../validators/loginValidators';
 
-import { Button, FormControl, Input, Spinner } from '@chakra-ui/react';
+import { Button, FormControl, Input, Spinner, useToast } from '@chakra-ui/react';
+import { loginToasts as toasts } from '../../utils/toasts';
 
 const LoginFormView = ({ handleLogin, username, password, showSpinner }: LoginFormViewFields) => {
     const inputStyle = {
@@ -55,6 +55,7 @@ const SpinnerView = ({isVisible}: {isVisible: boolean}) => {
 
 const LoginForm = () => {
     const dispatch = useDispatch();
+    const toast = useToast();
 
     const formVisible = useSelector((state: RootState) => state.loginForm.form);
     const spinnerVisible = useSelector((state: RootState) => state.loginForm.spinner);
@@ -68,25 +69,26 @@ const LoginForm = () => {
     };
 
     const notifyIfFailed = (timeout: TimeoutObject) => {
-        const dispatches = () => {
-            dispatch(setNotification(`Login timed out, please try again`));
+        const handleFailure = () => {
+            toast(toasts.failed);
             dispatch(hideLoginSpinner());
         };
-        timeout.set(dispatches, 5000);
+
+        timeout.set(handleFailure, 5000);
     };
 
-    const clearNotificationsAndSpinner = (timeout: TimeoutObject) => {
+    const clearToastsAndSpinner = (timeout: TimeoutObject) => {
         timeout.clear();
         dispatch(hideLoginSpinner());
     };
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        const notification = useTimeout();
+        const timeout = useTimeout();
 
         new Promise((resolve) => {
             dispatch(showLoginSpinner());
-            notifyIfFailed(notification);
+            notifyIfFailed(timeout);
 
             const token = dispatch(login({
                 username: username.value,
@@ -97,15 +99,15 @@ const LoginForm = () => {
         })
         .then((token) => {
             if (isTokenData(token)) {
-                clearNotificationsAndSpinner(notification);
-                dispatch(setNotification(`${token.name} logged in`));
+                clearToastsAndSpinner(timeout);
+                toast(toasts.success(token.name));
                 clearInputFields();
                 dispatch(toggleLoginForm());
             }
         })
         .catch((e) => {
-            clearNotificationsAndSpinner(notification);
-            dispatch(setNotification(`${e.message}`, 5000));
+            clearToastsAndSpinner(timeout);
+            toast(toasts.error(e.message));
         });
     };
 

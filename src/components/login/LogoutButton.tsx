@@ -2,11 +2,12 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { showLoginForm } from '../../state/reducers/loginForm';
 import { getStoredToken, logout } from '../../state/reducers/login';
-import { setNotification } from '../../state/reducers/notification';
 import { RootState } from '../../state/store';
 import { SubmitHandler } from '../../types';
 import { baseMargins } from '../../utils/styles';
-import { Button } from '@chakra-ui/react';
+
+import { Button, useToast } from '@chakra-ui/react';
+import { logoutToasts as toasts } from '../../utils/toasts';
 
 const LogoutButtonView = ({ handleSubmit }: SubmitHandler) => {
     const buttonStyle = {
@@ -27,10 +28,11 @@ const LogoutButtonView = ({ handleSubmit }: SubmitHandler) => {
 
 const LogoutButton = () => {
     const dispatch = useDispatch();
+    const toast = useToast();
     const token = useSelector((state: RootState) => state.login);
 
     const notifyLogout = (name: string | undefined) => {
-        if (name) dispatch(setNotification(`${name} logged out`));
+        if (name) toast(toasts.success(name));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -41,8 +43,7 @@ const LogoutButton = () => {
             dispatch(showLoginForm());
             notifyLogout(name);
         } catch(e) {
-            dispatch(setNotification(`Error logging out: ${e.message}`));
-            console.error(`Error: ${e.message}`);
+            toast(toasts.failed(e.message));
         }
     };
 
