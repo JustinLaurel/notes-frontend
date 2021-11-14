@@ -5,8 +5,7 @@ import parser from '../../validators/parsers';
 import { AppDispatch } from "../store";
 import { ActionPayload } from '../../types';
 
-const reducer = 
-    (state = [], { type, payload }: ActionPayload) => {
+const reducer = (state = [], { type, payload }: ActionPayload) => {
     switch(type) {
         case 'notes/initialize': {
             if (isNotesArray(payload)) {
@@ -67,16 +66,32 @@ export const removeNote = (id: string) => async (dispatch: AppDispatch) => {
 };
 
 export const createNote = (content: string) => async (dispatch: AppDispatch) => { 
-    const note: NewNote = {
+    const newNote: NewNote = {
         content,
         created: new Date().toString()
     };
+    const tempId = JSON.stringify(Math.round(Math.random() * 100000000));
+
     try {
-        const newNote = await notesService.addNew(note);
+        //Note-creation is implemented in such a way that note-adding is instantaneous, instead
+        // of waiting for a response from the backend
         dispatch({
             type: 'notes/create',
-            payload: newNote
-        });        
+            payload: {
+                ...newNote,
+                _id: tempId
+            }
+        });
+
+        const noteWithId = await notesService.addNew(newNote); 
+        dispatch({
+            type: 'notes/remove',
+            payload: tempId
+        });
+        dispatch({
+            type: 'notes/create',
+            payload: noteWithId
+        });
     } catch(e) {
         console.log(`Error adding new notes: ${e.message}`);
     }

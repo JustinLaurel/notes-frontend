@@ -68,7 +68,12 @@ const LoginForm = () => {
         password.clearField();
     };
 
-    const notifyIfFailed = (timeout: TimeoutObject) => {
+    const clearToastsAndSpinner = (timeout: TimeoutObject) => {
+        timeout.clear();
+        dispatch(hideLoginSpinner());
+    };
+
+    const notifyIfTimedOut = (timeout: TimeoutObject) => {
         const handleFailure = () => {
             toast(toasts.failed);
             dispatch(hideLoginSpinner());
@@ -77,18 +82,13 @@ const LoginForm = () => {
         timeout.set(handleFailure, 5000);
     };
 
-    const clearToastsAndSpinner = (timeout: TimeoutObject) => {
-        timeout.clear();
-        dispatch(hideLoginSpinner());
-    };
-
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
         const timeout = useTimeout();
 
         new Promise((resolve) => {
             dispatch(showLoginSpinner());
-            notifyIfFailed(timeout);
+            notifyIfTimedOut(timeout);
 
             const token = dispatch(login({
                 username: username.value,
