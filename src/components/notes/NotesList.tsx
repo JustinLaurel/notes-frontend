@@ -19,7 +19,7 @@ const NotesList = () => {
     const notes: Note[] = useSelector((state: RootState) => state.notes);
 
     const gridStyle = {
-        "templateColumns": "minmax(auto, 450px) 30px",
+        "templateColumns": "minmax(auto, 600px) 30px",
         "rowGap": "5px"
     };
 

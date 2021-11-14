@@ -40,7 +40,7 @@ function App() {
                         <Route path='/'>
                             <Home />
                         </Route>
-                    </Switch> <br /> <br />
+                    </Switch> <br />
                     <LoginForm />
                 </Box>
             </Router>

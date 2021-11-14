@@ -30,7 +30,7 @@ const LoginFormView = ({ handleLogin, username, password, showSpinner }: LoginFo
             onSubmit={handleLogin}
             {...baseMargins}>
                 username: <Input {...username} {...inputStyle} /> <br />
-                password: <Input {...password} {...inputStyle}/> <br />
+                password: <Input {...password} {...inputStyle}/>
                 <div>
                     <Button {...buttonStyle}>login</Button>
                     <SpinnerView isVisible={showSpinner}/>
@@ -122,7 +122,6 @@ const LoginForm = () => {
                 : null}
         </>
     );
-
 };
 
 export default LoginForm;

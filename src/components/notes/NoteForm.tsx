@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { createNote } from '../../state/reducers/notes';
 import { useField } from '../../utils/hooks';
@@ -6,12 +6,16 @@ import { useField } from '../../utils/hooks';
 import { Input, Button, FormControl } from "@chakra-ui/react";
 import { UseField } from '../../types';
 
+type FormViewProps = {
+    onSubmit(e: React.FormEvent): void,
+    noteInput: UseField,
+};
 const NoteFormView = 
-    ({ onSubmit, noteInput }: { onSubmit: (e: React.FormEvent) => void, noteInput: UseField }) => {
+    forwardRef<HTMLInputElement, FormViewProps>(({ onSubmit, noteInput }, ref) => {
     const inputStyle = {
         "placeholder": "new note...",
         "size": "sm",
-        "w": 300,
+        "w": 350,
         "variant": "filled",
         "borderRadius": "2xl",
         "m": 1.5,
@@ -32,14 +36,12 @@ const NoteFormView =
     };
 
     return (
-        <form onSubmit={onSubmit}>
-            <FormControl>
-                <Input {...inputStyle} {...noteInput}></Input>
-                <Button {...buttonStyle}>save</Button>
-            </FormControl>
-        </form>
+        <FormControl as="form" onSubmit={onSubmit}>
+            <Input ref={ref} {...inputStyle} {...noteInput}></Input>
+            <Button {...buttonStyle}>save</Button>
+        </FormControl>
     );
-};
+});
 
 const NoteForm = () => {
     const noteInput = useField('text');
@@ -50,7 +52,19 @@ const NoteForm = () => {
         noteInput.clearField();
     };
 
-    return <NoteFormView onSubmit={addNote} noteInput={noteInput} />;
+    const formInput = useRef<HTMLInputElement>(null);
+    //Slash listener, if user presses '/' key on keyboard with no element currently in 
+    // focus, then the note form input will be selected
+    const addSlashListener = () => {
+        document.addEventListener('keyup', (event) => {
+            if (event.code === 'Slash' && formInput.current && !document.activeElement?.id) {
+                formInput.current.focus();
+            }
+        });
+    };
+    addSlashListener();
+
+    return <NoteFormView ref={formInput} onSubmit={addNote} noteInput={noteInput} />;
 };
 
 export default NoteForm;
