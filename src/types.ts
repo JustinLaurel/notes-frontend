@@ -34,6 +34,20 @@ export interface User {
     passwordHash: string
 }
 
+export interface SignupData {
+    username: string,
+    firstName: string,
+    lastName: string,
+    password: string,
+    verify: string
+}
+
+export interface ParsedSignupData {
+    username: string,
+    name: string,
+    password: string
+}
+
 export interface SubmitHandler {
     handleSubmit(e: React.FormEvent): void
 }
@@ -43,6 +57,21 @@ export interface LoginFormViewFields {
     username: UseField,
     password: UseField,
     showSpinner: boolean,
+}
+
+export interface SignupFormViewFields {
+    firstName: UseField,
+    lastName: UseField,
+    username: UseField,
+    password: UseField,
+    verify: UseField,
+    handleSignup(e: React.FormEvent): void,
+    spinnerVisible: boolean,
+
+}
+
+export interface TooltipFields {
+    password: UseField
 }
 
 export interface UseField {
@@ -55,4 +84,8 @@ export interface UseField {
 export interface TimeoutObject {
     set(func: unknown, timeout: number): void,
     clear(): void;
+}
+
+export interface VisibilityToggler {
+    toggleVisibility: () => void 
 }

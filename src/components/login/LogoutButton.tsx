@@ -1,13 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { showLoginForm } from '../../state/reducers/loginForm';
+import { showLoginForm } from '../../state/reducers/views';
 import { getStoredToken, logout } from '../../state/reducers/login';
 import { RootState } from '../../state/store';
 import { SubmitHandler } from '../../types';
 import { baseMargins } from '../../utils/styles';
 
 import { Button, useToast } from '@chakra-ui/react';
-import { logoutToasts as toasts } from '../../utils/toasts';
+import { logoutToasts as toasts } from '../../utils/toasts/login';
+import { clearNotes } from '../../state/reducers/notes';
 
 const LogoutButtonView = ({ handleSubmit }: SubmitHandler) => {
     const buttonStyle = {
@@ -42,8 +43,9 @@ const LogoutButton = () => {
             dispatch(logout());
             dispatch(showLoginForm());
             notifyLogout(name);
+            dispatch(clearNotes());
         } catch(e) {
-            toast(toasts.failed(e.message));
+            toast(toasts.failed((e as Error).message));
         }
     };
 

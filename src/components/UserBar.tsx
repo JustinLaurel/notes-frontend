@@ -1,11 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../state/store';
-import { isTokenData } from '../../validators/loginValidators';
-import { toggleLoginForm } from '../../state/reducers/loginForm';
+import { RootState } from '../state/store';
+import { isTokenData } from '../validators/loginValidators';
+import { toggleLoginForm, toggleSignupForm } from '../state/reducers/views';
 
-import LogoutButton from './LogoutButton';
-import LoginButton from './LoginButton';
+import LogoutButton from './login/LogoutButton';
+import LoginButton from './login/LoginButton';
+import SignupButton from './signup/SignupButton';
 
 const NameView = ({ name }: { name: string }) => {
     const spacing = {
@@ -22,8 +23,12 @@ const UserBar = () => {
     const token = useSelector((state: RootState) => state.login);
     const dispatch = useDispatch();
 
-    const toggleVisibility = () => {
+    const toggleLogin = () => {
         dispatch(toggleLoginForm());
+    };
+
+    const toggleSignup = () => {
+        dispatch(toggleSignupForm());
     };
 
     const inline = {
@@ -41,7 +46,12 @@ const UserBar = () => {
             </div>
         );
     } else {
-        return <LoginButton toggleVisibility={toggleVisibility} />;
+        return (
+            <div style={inline}>
+                <LoginButton toggleVisibility={toggleLogin} />
+                <SignupButton toggleVisibility={toggleSignup} />
+            </div>
+        );
     }
 };
 

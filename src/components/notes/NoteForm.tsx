@@ -3,8 +3,10 @@ import { useDispatch } from 'react-redux';
 import { createNote } from '../../state/reducers/notes';
 import { useField } from '../../utils/hooks';
 
-import { Input, Button, FormControl } from "@chakra-ui/react";
+import { Input, Button, FormControl, useToast } from "@chakra-ui/react";
+import { noteToasts as toasts } from '../../utils/toasts/notes';
 import { UseField } from '../../types';
+import { userIsLoggedIn } from '../../state/reducers/login';
 
 type FormViewProps = {
     onSubmit(e: React.FormEvent): void,
@@ -46,10 +48,16 @@ const NoteFormView =
 const NoteForm = () => {
     const noteInput = useField('text');
     const dispatch = useDispatch();
+    const toast = useToast();
+
     const addNote = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(createNote(noteInput.value));
-        noteInput.clearField();
+        if (noteInput.value.length < 4) return;
+        else if (userIsLoggedIn()) {
+            dispatch(createNote(noteInput.value));
+            noteInput.clearField();
+        } 
+        else toast(toasts.notLoggedIn);
     };
 
     const formInput = useRef<HTMLInputElement>(null);

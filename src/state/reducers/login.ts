@@ -48,6 +48,13 @@ export const saveTokenToState = () => (dispatch: AppDispatch) => {
     }
 };
 
+export const saveTokenToLocalStorage = (token: TokenData) => (dispatch: AppDispatch) => {
+    dispatch({
+        type: 'login/storeToken',
+        payload: token
+    });
+};
+
 export const login = (loginInfo: unknown) => async (dispatch: AppDispatch) => {
     const credentials = parseCredentials(loginInfo);
     const token = await loginService.login(credentials);
@@ -55,8 +62,14 @@ export const login = (loginInfo: unknown) => async (dispatch: AppDispatch) => {
     if (!isTokenData(token)) {
         throw new Error(`Invalid username or password`);
     }
+
     dispatch({
         type: 'login/storeToken',
+        payload: token
+    });
+    
+    dispatch({
+        type: 'login/init',
         payload: token
     });
     return token;
@@ -71,6 +84,10 @@ export const getStoredToken = (): TokenData | null => {
     const userLogin: unknown = JSON.parse(userString);
 
     return parseTokenData(userLogin);
+};
+
+export const userIsLoggedIn = () => {
+    return (Boolean(getStoredToken()));
 };
 
 export default reducer;

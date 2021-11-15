@@ -13,7 +13,7 @@ const DeleteButtonView = ({ deleteNote, toggleHighlight }: ViewProps) => {
     const buttonStyle = {
         "color": "black",
         "borderRadius": "full",
-        "bgColor": "red.500",
+        "bgColor": "transparent",
         "size": "sm",
         "_hover": {
             "color": "white",

@@ -1,24 +1,22 @@
 import { Note, NewNote } from '../types';
 import parser from './parsers';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const isNewNote = (value: any): value is NewNote => {
+export const isNewNote = (value: unknown): value is NewNote => {
     if (!value) return false;
-    else if (!parser.isStringAndExists(value.content)) return false;
-    else if (!parser.isStringAndExists(value.created) || !isDate(value.created)) return false;
+    else if (!parser.isStringAndExists((value as NewNote).content)) return false;
+    else if (!parser.isStringAndExists((value as NewNote).created) 
+        || !isDate((value as NewNote).created)) return false;
     return true;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isNote = (value: any): value is Note => {
+export const isNote = (value: unknown): value is Note => {
     if (!value) return false;
-    if (!parser.isStringAndExists(value._id)) return false;
+    if (!parser.isStringAndExists((value as Note)._id)) return false;
     else if (!isNewNote(value)) return false;
     return true;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const isNoteAndExists = (value: any): boolean => {
+export const isNoteAndExists = (value: unknown): boolean => {
     if (!value) return false;
     else if (!isNote(value)) return false;
 

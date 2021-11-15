@@ -1,14 +1,16 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import notesReducer from './reducers/notes';
 import loginReducer from './reducers/login';
-import loginFormReducer from './reducers/loginForm';
+import viewsReducer from './reducers/views';
+import signupReducer from './reducers/signup';
 
 import thunk from 'redux-thunk';
 
 const root = combineReducers({
     notes: notesReducer,
     login: loginReducer,
-    loginForm: loginFormReducer,
+    views: viewsReducer,
+    signup: signupReducer,
 });
 
 const store = createStore(
@@ -18,8 +20,8 @@ const store = createStore(
 
 export default store;
 
-//No idea why we need this. Redux docs said to declare this so why not
 export type AppDispatch = typeof store.dispatch;
+export type AppGetState = typeof store.getState;
 
 //To use as type for useSelector's state parameter
 export type RootState = ReturnType<typeof store.getState>;

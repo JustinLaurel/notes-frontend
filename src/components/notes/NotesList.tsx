@@ -23,11 +23,16 @@ const NotesList = () => {
         "rowGap": "5px"
     };
 
+    const noteStyle = {
+        'fontFamily': '"Lato",  sans serif',
+        'fontSize': '16px'
+    };
+
     return (
-        <Grid {...gridStyle} {...baseMargins}>
+        <Grid {...gridStyle} {...baseMargins} {...noteStyle}>
             {notes.map(note => {
                 return (
-                    <React.Fragment key={note._id}>
+                    <React.Fragment key={note._id} >
                         <NoteContentView content={note.content} _id={note._id}/>
                         <Center>
                             <DeleteButton 

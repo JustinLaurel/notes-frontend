@@ -4,18 +4,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../state/reducers/login';
 import { baseMargins } from '../../utils/styles';
 import { RootState } from '../../state/store';
-import { hideLoginSpinner, showLoginSpinner, toggleLoginForm } from '../../state/reducers/loginForm';
+import { hideLoginSpinner, showLoginSpinner, toggleLoginForm } from '../../state/reducers/views';
 import { LoginFormViewFields, TimeoutObject, TokenData } from '../../types';
 import { isTokenData } from '../../validators/loginValidators';
 
-import { Button, FormControl, Input, Spinner, useToast } from '@chakra-ui/react';
-import { loginToasts as toasts } from '../../utils/toasts';
+import { loginToasts as toasts } from '../../utils/toasts/login';
+import { initializeNotes } from '../../state/reducers/notes';
+
+import {
+    Box,
+    Button, 
+    FormControl, 
+    Input, 
+    Spinner, 
+    useToast, 
+    InputGroup,
+    InputLeftElement,
+    chakra,
+    Stack
+} from '@chakra-ui/react';
+
+import { FaUserAlt, FaLock } from 'react-icons/fa';
 
 const LoginFormView = ({ handleLogin, username, password, showSpinner }: LoginFormViewFields) => {
     const inputStyle = {
-        "size": "xs",
-        "w": 150,
+        "size": "sm",
+        "w": 200,
         "variant": "filled",
+        "borderRadius": "xl",
     };
 
     const buttonStyle = {
@@ -24,17 +40,29 @@ const LoginFormView = ({ handleLogin, username, password, showSpinner }: LoginFo
         "display": "inline"
     };
 
+    const CFaUserAlt = chakra(FaUserAlt);
+    const CFaLock = chakra(FaLock);
+
     return (
-        <FormControl
-            as="form" 
-            onSubmit={handleLogin}
-            {...baseMargins}>
-                username: <Input {...username} {...inputStyle} /> <br />
-                password: <Input {...password} {...inputStyle}/>
-                <div>
+        <FormControl as="form" onSubmit={handleLogin} {...baseMargins}>
+            <Stack spacing={0.5}>
+                <InputGroup {...inputStyle}>
+                    <InputLeftElement
+                        pointerEvents='none'
+                        children={<CFaUserAlt />} />
+                    <Input {...username} {...inputStyle} placeholder='username' /> <br />
+                </InputGroup>
+                <InputGroup {...inputStyle}>
+                    <InputLeftElement
+                        pointerEvents='none'
+                        children={<CFaLock />} />
+                    <Input {...password} {...inputStyle} placeholder='password' />
+                </InputGroup>
+                <Box>
                     <Button {...buttonStyle}>login</Button>
                     <SpinnerView isVisible={showSpinner}/>
-                </div>
+                </Box>
+            </Stack>
         </FormControl>
     );
 };
@@ -57,8 +85,8 @@ const LoginForm = () => {
     const dispatch = useDispatch();
     const toast = useToast();
 
-    const formVisible = useSelector((state: RootState) => state.loginForm.form);
-    const spinnerVisible = useSelector((state: RootState) => state.loginForm.spinner);
+    const formVisible = useSelector((state: RootState) => state.views.loginForm);
+    const spinnerVisible = useSelector((state: RootState) => state.views.loginSpinner);
 
     const username = useField('text');
     const password = useField('password');    
@@ -100,6 +128,7 @@ const LoginForm = () => {
         .then((token) => {
             if (isTokenData(token)) {
                 clearToastsAndSpinner(timeout);
+                dispatch(initializeNotes());
                 toast(toasts.success(token.name));
                 clearInputFields();
                 dispatch(toggleLoginForm());

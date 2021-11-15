@@ -1,18 +1,18 @@
-const defaultDuration = 3000;
+const DEFAULT_DURATION = 3000;
 
 export const loginToasts = (() => {
     const failed = {
         description: 'Login failed. Please try again',
         status: 'error' as const,
-        duration: defaultDuration,
+        duration: DEFAULT_DURATION,
         isClosable: true
     };
 
     const success = (name: string) => {
         return {
-            description: `${name} logged in`,
+            description: `logged in as ${name}`,
             status: 'success' as const,
-            duration: defaultDuration,
+            duration: DEFAULT_DURATION,
             isClosable: true,
         };
     };
@@ -21,7 +21,7 @@ export const loginToasts = (() => {
         return {
             description: `${message}`,
             status: 'error' as const,
-            duration: defaultDuration,
+            duration: DEFAULT_DURATION,
             isClosable: true,
         };
     };
@@ -38,7 +38,7 @@ export const logoutToasts = (() => {
         return {
             description: `${name} logged out`,
             status: 'success' as const,
-            duration: defaultDuration,
+            duration: DEFAULT_DURATION,
             isClosable: true,
         };
     };
@@ -47,7 +47,7 @@ export const logoutToasts = (() => {
         return {
             description: `Error logging out: ${message}`,
             status: 'error' as const,
-            duration: defaultDuration,
+            duration: DEFAULT_DURATION,
             isClosable: true,
         };
     };

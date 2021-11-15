@@ -1,21 +1,50 @@
 import axios from 'axios';
 import { Note, NewNote } from '../types';
+import { getStoredToken } from '../state/reducers/login';
 
 const baseUrl = 'http://localhost:3001/notes';
 
 const getAll = async () => {
-    const { data: notes } = await axios.get<Note[]>(baseUrl);
-    return notes;
+    const tokenData = getStoredToken();
+    if (tokenData) {
+        const header = {headers: {'authorization': tokenData.token}};
+        
+        const { data: notes } = await axios.get<Note[]>(
+            baseUrl,
+            header
+        );
+        return notes;
+    } else return null;
 };
 
 const addNew = async (note: NewNote) => {
-    const { data } = await axios.post<Note>(baseUrl, note);
-    return data;
+    const tokenData = getStoredToken();
+    if (tokenData) {
+        const body = {
+            note, 
+            token: tokenData.token
+        };
+
+        const { data } = await axios.post<Note>(baseUrl, body);
+
+        return data;
+    } else {
+        throw new Error(`Failed to add note, user currently not logged in`);
+    }
 };
 
 const remove = async (id: string) => {
-    const response = await axios.delete(`${baseUrl}/${id}`);
-    return response; //console log later to see what is data structure
+    const tokenData = getStoredToken();
+    if (tokenData) {
+        const data = tokenData.token;
+        const response = await axios.delete(
+            `${baseUrl}/${id}`,
+            {data: {data}}
+        );
+        return response;
+    } else {
+        throw new Error(`Failed to delete note, user currently not logged in`);
+    }
 };
 
 export default {

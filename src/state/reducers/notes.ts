@@ -1,6 +1,6 @@
 import notesService from "../../services/notesService";
 import { Note, NewNote } from "../../types";
-import { isNoteAndExists, isNotesArray } from "../../validators/noteValidators";
+import { isNote, isNotesArray } from "../../validators/noteValidators";
 import parser from '../../validators/parsers';
 import { AppDispatch } from "../store";
 import { ActionPayload } from '../../types';
@@ -26,7 +26,7 @@ const reducer = (state = [], { type, payload }: ActionPayload) => {
             }
         }
         case 'notes/create': {
-            if (isNoteAndExists(payload)) {
+            if (isNote(payload)) {
                 return [
                     ...state,
                     payload
@@ -36,21 +36,26 @@ const reducer = (state = [], { type, payload }: ActionPayload) => {
                 return [...state];
             }
         }
+        case 'notes/clear': {
+            return [];
+        }
         default: 
             return [...state];
     }
 };
 
+export const clearNotes = () => (dispatch: AppDispatch) => {
+    dispatch({
+        type: 'notes/clear',
+    });
+};
+
 export const initializeNotes = () => async (dispatch: AppDispatch) => {
-    try {
-        const notes = await notesService.getAll();
-        dispatch({
-            type: 'notes/initialize',
-            payload: notes
-        });
-    } catch(e) {
-        console.log(`Error initializing notes: ${e.message}`);
-    }
+    const notes = await notesService.getAll();
+    dispatch({
+        type: 'notes/initialize',
+        payload: notes
+    });
 };
 
 export const removeNote = (id: string) => async (dispatch: AppDispatch) => {
@@ -61,11 +66,11 @@ export const removeNote = (id: string) => async (dispatch: AppDispatch) => {
         });
         await notesService.remove(id);
     } catch(e) {
-        console.log(`Error deleting note: ${e.message}`);
+        console.log(`Error deleting note: ${(e as Error).message}`);
     }
 };
 
-export const createNote = (content: string) => async (dispatch: AppDispatch) => { 
+export const createNote = (content: string) => async (dispatch: AppDispatch) => {
     const newNote: NewNote = {
         content,
         created: new Date().toString()
@@ -93,7 +98,7 @@ export const createNote = (content: string) => async (dispatch: AppDispatch) => 
             payload: noteWithId
         });
     } catch(e) {
-        console.log(`Error adding new notes: ${e.message}`);
+        console.log(`Error adding note: ${(e as Error).message}`);
     }
 };
 
