@@ -1,14 +1,13 @@
 import React from "react";
 
-export interface Note {
-    _id: string,
-    content: string,
-    created: string,
-}
-
 export interface NewNote {
+    position: string,
     content: string,
     created: string
+}
+
+export interface Note extends NewNote {
+    _id: string,
 }
 
 export interface ActionPayload {
@@ -20,6 +19,11 @@ export interface TokenData {
     token: string,
     username: string,
     name: string
+}
+
+export interface NoteIdPosition {
+    position: string,
+    _id: string,
 }
 
 export interface Credentials {
@@ -88,4 +92,9 @@ export interface TimeoutObject {
 
 export interface VisibilityToggler {
     toggleVisibility: () => void 
+}
+
+export interface PositionPayload {
+    activeIndex: number,
+    overIndex: number
 }

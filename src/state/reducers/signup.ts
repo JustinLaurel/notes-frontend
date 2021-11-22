@@ -46,7 +46,8 @@ const checkDatabaseForAvailability = async (username: string) => {
     return isAvailable;
 };
 
-export const checkAvailability = (username: string) => async (dispatch: AppDispatch, getState: AppGetState) => {
+export const checkAvailability = (username: string) => 
+async (dispatch: AppDispatch, getState: AppGetState) => {
     const lowercase = username.toLowerCase();
     const availableUsernames = getState().signup;
     

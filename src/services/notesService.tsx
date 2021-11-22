@@ -1,8 +1,25 @@
 import axios from 'axios';
-import { Note, NewNote } from '../types';
+import { Note, NewNote, NoteIdPosition } from '../types';
 import { getStoredToken } from '../state/reducers/login';
 
 const baseUrl = 'http://localhost:3001/notes';
+
+export const UPDATE_POSITION = "POSITION";
+export const UPDATE_CONTENT = "CONTENT";
+type UpdateType = typeof UPDATE_POSITION | typeof UPDATE_CONTENT;
+
+const update = async (toUpdate: unknown, type: UpdateType) => {
+    switch(type) {
+        case UPDATE_POSITION: {
+            const response = await axios.put(`${baseUrl}/position`, toUpdate);
+            return response;
+        }
+        case UPDATE_CONTENT: {
+            return;
+        }
+        default: return;
+    }
+};
 
 const getAll = async () => {
     const tokenData = getStoredToken();
@@ -33,13 +50,17 @@ const addNew = async (note: NewNote) => {
     }
 };
 
-const remove = async (id: string) => {
+//Note deletion fails from here onwards
+const remove = async (noteId: string, toUpdate: NoteIdPosition[]) => { 
     const tokenData = getStoredToken();
     if (tokenData) {
         const data = tokenData.token;
         const response = await axios.delete(
-            `${baseUrl}/${id}`,
-            {data: {data}}
+            `${baseUrl}/${noteId}`,
+            {data: {
+                token: data,
+                toUpdate
+            }}
         );
         return response;
     } else {
@@ -50,5 +71,6 @@ const remove = async (id: string) => {
 export default {
     getAll,
     addNew,
-    remove
+    remove,
+    update
 };

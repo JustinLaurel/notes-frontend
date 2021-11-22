@@ -5,6 +5,8 @@
   "dependencies": {
     "@chakra-ui/icons": "^1.0.12",
     "@chakra-ui/react": "^1.5.2",
+    "@dnd-kit/modifiers": "^4.0.0",
+    "@dnd-kit/sortable": "^5.1.0",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
     "@testing-library/jest-dom": "^5.11.10",

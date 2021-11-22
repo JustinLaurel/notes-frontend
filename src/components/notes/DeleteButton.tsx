@@ -4,6 +4,7 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import { IconButton } from '@chakra-ui/react';
 
 import { removeNote } from '../../state/reducers/notes';
+import { Note } from '../../types';
 
 interface ViewProps {
     deleteNote: (e: React.FormEvent) => void;
@@ -38,16 +39,16 @@ const DeleteButtonView = ({ deleteNote, toggleHighlight }: ViewProps) => {
     );
 };
 
-const DeleteButton = ({ noteId }: { noteId: string }) => {
+const DeleteButton = ({ note }: { note: Note }) => {
     const dispatch = useDispatch();
 
     const deleteNote = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(removeNote(noteId));
+        dispatch(removeNote(note));
     };
 
     const toggleHighlight = () => {
-        const noteContent = document.getElementById(noteId);
+        const noteContent = document.getElementById(note._id);
         if (noteContent) {
             switch(noteContent.style.color) {
                 case 'red': {

@@ -61,8 +61,6 @@ const NoteForm = () => {
     };
 
     const formInput = useRef<HTMLInputElement>(null);
-    //Slash listener, if user presses '/' key on keyboard with no element currently in 
-    // focus, then the note form input will be selected
     const addSlashListener = () => {
         document.addEventListener('keyup', (event) => {
             if (event.code === 'Slash' && formInput.current && !document.activeElement?.id) {
