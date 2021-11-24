@@ -1,7 +1,7 @@
 import { AppDispatch } from "../store";
 
-const baseLoginType = 'views/loginForm';
-const baseSignupType = 'views/signupForm';
+const baseLoginType = 'userFormViews/loginForm';
+const baseSignupType = 'userFormViews/signupForm';
 
 const reducer = (state = 
     {loginForm: false, 

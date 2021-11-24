@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import {
     BrowserRouter as Router,
     Route,
-    // Link,
     Switch
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -29,8 +28,8 @@ function App() {
             dispatch(initializeNotes());
             dispatch(saveTokenToState());    
         } catch(e) {
-            console.group(`Network error during notes initialization`);
-            toast(noteToasts.failed);
+            console.error(`Network error during notes initialization`);
+            toast(noteToasts.failedGet);
         }
     }, [dispatch]);
 

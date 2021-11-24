@@ -26,7 +26,7 @@ import { signup } from "../../state/reducers/signup";
 import signupToasts from '../../utils/toasts/signup';
 import { loginToasts } from '../../utils/toasts/login';
 import { isTokenData } from '../../validators/loginValidators';
-import { hideSignupForm, hideSignupSpinner, showSignupSpinner } from '../../state/reducers/views';
+import { hideSignupForm, hideSignupSpinner, showSignupSpinner } from '../../state/reducers/userFormViews';
 import UsernameAvailableButton from './CheckUsernameButton';
 
 const CFaUserAlt = chakra(FaUserAlt);
@@ -122,8 +122,8 @@ const SignupFormView =
 };
 
 const SignupForm = () => {
-    const formVisible = useSelector((state: RootState) => state.views.signupForm);
-    const spinnerVisible = useSelector((state: RootState) => state.views.signupSpinner);
+    const formVisible = useSelector((state: RootState) => state.userFormViews.signupForm);
+    const spinnerVisible = useSelector((state: RootState) => state.userFormViews.signupSpinner);
     const dispatch = useDispatch();
     const toast = useToast();
 
@@ -160,7 +160,8 @@ const SignupForm = () => {
             }
         })
         .catch((error) => {
-            toast(signupToasts.failed(error.message));
+            console.error(`Failed to create user: ${error.message}`);
+            toast(signupToasts.failed(`Failed to create user`));
         })
         .finally(() => {
             dispatch(hideSignupSpinner());

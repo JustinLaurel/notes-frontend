@@ -10,7 +10,7 @@ const signup = async (user: ParsedSignupData) => {
         if (!isTokenData(data)) throw new Error(`Failed to create account. Please try again`);
         return data;
     } catch(e) {
-        throw new Error((e as AxiosError).response?.data.error);
+        throw new Error((e as AxiosError).response?.data);
     }
 };
 

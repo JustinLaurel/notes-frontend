@@ -53,11 +53,18 @@ const NoteForm = () => {
     const addNote = (e: React.FormEvent) => {
         e.preventDefault();
         if (noteInput.value.length < 4) return;
-        else if (userIsLoggedIn()) {
+        else if (!userIsLoggedIn()) {
+            toast(toasts.notLoggedIn);
+            return;
+        } 
+
+        try {
             dispatch(createNote(noteInput.value));
             noteInput.clearField();
-        } 
-        else toast(toasts.notLoggedIn);
+        } catch(e) {
+            console.error((e as Error).message);
+            toast(toasts.failedCreate);
+        }
     };
 
     const formInput = useRef<HTMLInputElement>(null);

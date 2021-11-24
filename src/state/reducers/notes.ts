@@ -1,6 +1,6 @@
-import notesService, { UPDATE_POSITION } from "../../services/notesService";
+import notesService, { UPDATE_CONTENT, UPDATE_POSITION } from "../../services/notesService";
 import { Note, NewNote } from "../../types";
-import { createTempNoteId, isNote, isNotesArray, parseNotePositions } from "../../validators/noteValidators";
+import { createTempNoteId, isNote, isNotesArray, isUpdatePayload, parseNotePositions } from "../../validators/noteValidators";
 import parser from '../../validators/parsers';
 import { AppDispatch, AppGetState } from "../store";
 import { ActionPayload } from '../../types';
@@ -15,14 +15,13 @@ const reducer = (state = [] as Note[], { type, payload }: ActionPayload) => {
             if (isNotesArray(payload)) {
                 return [...payload];
             } else {
-                console.log(`Invalid notes data: ${JSON.stringify(payload)}`);
                 return [...state];
             }
         }
         case 'notes/remove': {
             if (parser.isStringAndExists(payload)) {
                 const id = payload;
-                const newState: Note[] = state.filter((note: Note) => note._id !== id);
+                const newState = filterOutNote(state, id);
                 return newState;
             } else {
                 console.error(`Failed deletion of note state`);
@@ -40,11 +39,22 @@ const reducer = (state = [] as Note[], { type, payload }: ActionPayload) => {
                 return [...state];
             }
         }
-        case 'notes/update': {
+        case 'notes/updateOne': {
+            if (isUpdatePayload(payload)) {
+                const notes = [...state];
+                const index = notes.findIndex(note => note._id === payload.match);
+                notes[index] = payload.note;
+                return notes;
+            } else {
+                console.error(`Payload in notes/updateOne reducer is not an UpdatePayload`);
+                return [...state];
+            }
+        }
+        case 'notes/updateArray': {
             if (isNotesArray(payload)) {
                 return [...payload];
             } else {
-                console.error(`Failed to move note position in state`);
+                console.error(`Failed to update notes in notes reducer`);
                 return [...state];
             }
         }
@@ -56,42 +66,25 @@ const reducer = (state = [] as Note[], { type, payload }: ActionPayload) => {
     }
 };
 
-const updatePositionsDeleted = (notes: Note[], deletedPosition: string) => {
-    const changedNotes = [] as Note[];
-    for(let i = 0; i < notes.length; i++) {
-        const note = notes[i];
-        if (Number(note.position) > Number(deletedPosition)) {
-            note.position = JSON.stringify(Number(note.position) - 1);
-            changedNotes.push(note);
-        }
-    }
-
-    return {
-        updated: notes,
-        changedNotes
-    };
+const filterOutNote = (notes: Note[], idToFilter: string) => {
+    return notes.filter((note: Note) => note._id !== idToFilter);
 };
-export const removeNote = (note: Note) => async (dispatch: AppDispatch, getState: AppGetState) => {
+
+
+export const editNote = (edited: Note) => async (dispatch: AppDispatch) => {
+    dispatch({
+        type: 'notes/updateOne',
+        payload: {
+            match: edited._id,
+            note: edited
+        }
+    });
+
     try {
-        const notes = [...getState().notes];
-        const deletedPosition = note.position;
-
-        const { updated, changedNotes } = updatePositionsDeleted(notes, deletedPosition);
-        const positions = parseNotePositions(changedNotes);
-
-        dispatch({
-            type: 'notes/update',
-            payload: updated
-        });
-
-        dispatch({
-            type: 'notes/remove',
-            payload: note._id
-        });
-
-        await notesService.remove(note._id, positions);
+        const updated = await notesService.update(edited, UPDATE_CONTENT);
+        return updated;
     } catch(e) {
-        console.log(`Error deleting note: ${(e as Error).message}`);
+        console.error(`Error deleting note: ${(e as Error).message}`);
     }
 };
 
@@ -149,12 +142,53 @@ async (dispatch: AppDispatch, getState: AppGetState) => {
     const { updated, changedNotes } = updatePositionsSorted(moved, activeIndex, overIndex);
 
     dispatch({
-        type: 'notes/update',
+        type: 'notes/updateArray',
         payload: updated
     });
 
     await updatePositionsSortedInDb(changedNotes);
 };
+
+
+const updatePositionsDeleted = (notes: Note[], deletedPosition: string) => {
+    const changedNotes = [] as Note[];
+    for(let i = 0; i < notes.length; i++) {
+        const note = notes[i];
+        if (Number(note.position) > Number(deletedPosition)) {
+            note.position = JSON.stringify(Number(note.position) - 1);
+            changedNotes.push(note);
+        }
+    }
+
+    return {
+        updated: notes,
+        changedNotes
+    };
+};
+export const removeNote = (note: Note) => async (dispatch: AppDispatch, getState: AppGetState) => {
+    try {
+        const notes = [...getState().notes];
+        const deletedPosition = note.position;
+
+        const { updated, changedNotes } = updatePositionsDeleted(notes, deletedPosition);
+        const positions = parseNotePositions(changedNotes);
+
+        dispatch({
+            type: 'notes/updateArray',
+            payload: updated
+        });
+
+        dispatch({
+            type: 'notes/remove',
+            payload: note._id
+        });
+
+        await notesService.remove(note._id, positions);
+    } catch(e) {
+        console.error(`Error deleting note: ${(e as Error).message}`);
+    }
+};
+
 
 export const clearNotes = () => (dispatch: AppDispatch) => {
     dispatch({
@@ -205,7 +239,7 @@ async (dispatch: AppDispatch, getState: AppGetState) => {
             payload: noteWithId
         });
     } catch(e) {
-        console.log(`Error adding note: ${(e as Error).message}`);
+        console.error(`Error adding note: ${(e as Error).message}`);
     }
 };
 

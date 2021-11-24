@@ -1,4 +1,4 @@
-import { Note, NewNote, PositionPayload, NoteIdPosition } from '../types';
+import { Note, NewNote, PositionPayload, NoteIdPosition, UpdatePayload } from '../types';
 import parser from './parsers';
 
 export const isNewNote = (value: unknown): value is NewNote => {
@@ -15,6 +15,12 @@ export const isNote = (value: unknown): value is Note => {
     if (!parser.isStringAndExists((value as Note)._id)) return false;
     else if (!isNewNote(value)) return false;
     return true;
+};
+
+export const isUpdatePayload = (value: unknown): value is UpdatePayload => {
+    if (!value) return false;
+    if (!parser.isStringAndExists((value as UpdatePayload).match)) return false;
+    return isNote((value as UpdatePayload).note);
 };
 
 export const isNoteAndExists = (value: unknown): boolean => {

@@ -7,10 +7,10 @@ import { removeNote } from '../../state/reducers/notes';
 import { Note } from '../../types';
 
 interface ViewProps {
-    deleteNote: (e: React.FormEvent) => void;
+    handleDelete: (e: React.FormEvent) => void;
     toggleHighlight: () => void;
 }
-const DeleteButtonView = ({ deleteNote, toggleHighlight }: ViewProps) => {
+const DeleteButtonView = ({ handleDelete, toggleHighlight }: ViewProps) => {
     const buttonStyle = {
         "color": "black",
         "borderRadius": "full",
@@ -21,9 +21,6 @@ const DeleteButtonView = ({ deleteNote, toggleHighlight }: ViewProps) => {
             "bgColor": "red.900"
         },
         "title": "delete",
-        "display": "flex",
-        "justify-content": "center",
-        "align-items": "center"
     };
 
     return (
@@ -31,7 +28,7 @@ const DeleteButtonView = ({ deleteNote, toggleHighlight }: ViewProps) => {
             {...buttonStyle}
             aria-label='delete'
             icon={<DeleteIcon/>}
-            onClick={deleteNote}
+            onClick={handleDelete}
             onMouseOver={toggleHighlight}
             onMouseOut={toggleHighlight}
             >delete
@@ -42,7 +39,7 @@ const DeleteButtonView = ({ deleteNote, toggleHighlight }: ViewProps) => {
 const DeleteButton = ({ note }: { note: Note }) => {
     const dispatch = useDispatch();
 
-    const deleteNote = (e: React.FormEvent) => {
+    const handleDelete = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(removeNote(note));
     };
@@ -53,14 +50,10 @@ const DeleteButton = ({ note }: { note: Note }) => {
             switch(noteContent.style.color) {
                 case 'red': {
                     noteContent.style.color = '';
-                    // noteContent.style.textDecoration = '';
-                    // noteContent.style.fontStyle = '';
                     break;
                 }
                 case '': {
                     noteContent.style.color = 'red';
-                    // noteContent.style.textDecoration = 'line-through';
-                    // noteContent.style.fontStyle = 'italic';
                     break;
                 }
                 default: break;
@@ -70,7 +63,7 @@ const DeleteButton = ({ note }: { note: Note }) => {
 
     return (
         <DeleteButtonView 
-            deleteNote={deleteNote} 
+            handleDelete={handleDelete} 
             toggleHighlight={toggleHighlight}/>
     );
 };

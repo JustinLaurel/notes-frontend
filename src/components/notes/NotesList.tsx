@@ -1,5 +1,6 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../state/store';
 
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
@@ -7,50 +8,109 @@ import { restrictToParentElement, restrictToVerticalAxis } from '@dnd-kit/modifi
 
 import { Note } from '../../types';
 import { baseMargins } from '../../utils/styles';
-import { RootState } from '../../state/store';
-import { Grid, Center, Box } from '@chakra-ui/react';
+import { Grid, Center, Box, Input, FormControl, Button } from '@chakra-ui/react';
 
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
-
 import DeleteButton from './DeleteButton';
-import { sortNote } from '../../state/reducers/notes';
+import { editNote, sortNote } from '../../state/reducers/notes';
+import EditButton from './EditButton';
+import SkeletonList from './SkeletonList';
+import { stopEditMode } from '../../state/reducers/noteActionViews';
+import { getStoredToken } from '../../state/reducers/login';
 
-const SortableNoteView = ({ note }: { note: Note }) => {
+const NoteRowSortable = ({ note }: { note: Note }) => {
     const {
         setNodeRef,
         attributes,
         listeners,
-        transition, 
+        transition,
         transform,
     } = useSortable({ id: note.position });
 
     const sortableStyle = {
         transition,
-        transform: transform 
+        transform: transform
             ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)`
             : undefined
     };
+    
+    const inputStyle = {
+        height: "32px",
+        padding: "0px",
+        verticalAlign: "top",
+    };
+
+    const actionTracker = useSelector((state: RootState) => state.noteActionViews);
+    const dispatch = useDispatch();
+    const isBeingEdited = actionTracker.isEditing && actionTracker.noteId === note._id;
+
+    const [edited, setEdited] = useState(note.content);
+
+    //When note is sorted, the note parameter supplied changes, but edited maintains its 
+    // original note.content's value before sorting 
+    //This useEffect updates edited's value every time the note is sorted
+    useEffect(() => setEdited(note.content), [note.content]);
+
+    const saveNote = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        dispatch(stopEditMode());
+        if (edited === note.content) return;
+
+        const toSave: Note = {...note, content: edited};
+        dispatch(editNote(toSave));
+    };
+    const input = (
+        <FormControl as="form" onSubmit={saveNote}>
+            <Input id={note._id}
+                style={inputStyle}
+                autoFocus
+                autoComplete="off"
+                value={edited}
+                onChange={(e) => setEdited(e.currentTarget.value)}
+                onBlur={saveNote}
+                >
+            </Input>
+            <Button style={{display: "none"}} />
+        </FormControl>
+    );
+
+    const content = (
+        <Box id={note._id}
+            ref={setNodeRef} 
+            {...attributes} 
+            {...listeners} 
+            style={sortableStyle}>
+                {note.content}
+        </Box>
+    );
+
+    const contentNode = isBeingEdited
+        ? input
+        : content;
 
     return (
-        <React.Fragment key={note._id} >
-            <Box id={note._id} ref={setNodeRef} {...attributes} {...listeners} style={sortableStyle}>
-                {note.content}
-            </Box>
+        <React.Fragment key={note._id}>
+            {contentNode}
             <Center>
-            <DeleteButton
-                note={note} />
+                <EditButton note={note} isEditing={isBeingEdited} />
+            </Center>
+            <Center>
+                <DeleteButton note={note} />
             </Center>
         </React.Fragment>
     );
 };
+
 
 const NotesList = () => {
     const notes: Note[] = useSelector((state: RootState) => state.notes);
     const dispatch = useDispatch();
 
     const gridStyle = {
-        "templateColumns": "minmax(auto, 600px) 30px",
+        "templateColumns": "minmax(auto, 600px) 30px 30px",
+        "autoRows": "min-max(32px, max-content)",
         "rowGap": "5px",
     };
     const noteStyle = {
@@ -69,6 +129,10 @@ const NotesList = () => {
         else return;
     };
 
+    const theList = notes.length > 0 || getStoredToken()
+        ? notes.map(note => <NoteRowSortable note={note} key={note.position} />)
+        : <SkeletonList rows={5} />;
+
     return (
         <Grid {...gridStyle} {...baseMargins} {...noteStyle}>
             <DndContext 
@@ -78,7 +142,7 @@ const NotesList = () => {
                 <SortableContext 
                 items={notes.map(note => note.position)} 
                 strategy={verticalListSortingStrategy}>
-                    {notes.map(note => <SortableNoteView note={note} key={note.position} />)}
+                    {theList}
                 </SortableContext>
             </DndContext>
         </Grid>

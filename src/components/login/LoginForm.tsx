@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../state/reducers/login';
 import { baseMargins } from '../../utils/styles';
 import { RootState } from '../../state/store';
-import { hideLoginSpinner, showLoginSpinner, toggleLoginForm } from '../../state/reducers/views';
+import { hideLoginSpinner, showLoginSpinner, toggleLoginForm } from '../../state/reducers/userFormViews';
 import { LoginFormViewFields, TimeoutObject, TokenData } from '../../types';
 import { isTokenData } from '../../validators/loginValidators';
 
@@ -21,7 +21,8 @@ import {
     InputGroup,
     InputLeftElement,
     chakra,
-    Stack
+    Stack,
+    FormLabel
 } from '@chakra-ui/react';
 
 import { FaUserAlt, FaLock } from 'react-icons/fa';
@@ -45,6 +46,7 @@ const LoginFormView = ({ handleLogin, username, password, showSpinner }: LoginFo
 
     return (
         <FormControl as="form" onSubmit={handleLogin} {...baseMargins}>
+            <FormLabel as='legend'>Login</FormLabel>
             <Stack spacing={0.5}>
                 <InputGroup {...inputStyle}>
                     <InputLeftElement
@@ -85,8 +87,8 @@ const LoginForm = () => {
     const dispatch = useDispatch();
     const toast = useToast();
 
-    const formVisible = useSelector((state: RootState) => state.views.loginForm);
-    const spinnerVisible = useSelector((state: RootState) => state.views.loginSpinner);
+    const formVisible = useSelector((state: RootState) => state.userFormViews.loginForm);
+    const spinnerVisible = useSelector((state: RootState) => state.userFormViews.loginSpinner);
 
     const username = useField('text');
     const password = useField('password');    

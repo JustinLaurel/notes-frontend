@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { showLoginForm } from '../../state/reducers/views';
+import { showLoginForm } from '../../state/reducers/userFormViews';
 import { getStoredToken, logout } from '../../state/reducers/login';
 import { RootState } from '../../state/store';
 import { SubmitHandler } from '../../types';

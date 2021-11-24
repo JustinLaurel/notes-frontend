@@ -15,8 +15,15 @@ export const noteToasts = (() => {
         isClosable: true
     };
 
-    const failed = {
+    const failedGet = {
         description: `Failed to get notes, please check your network`,
+        status: 'error' as const,
+        duration: DEFAULT_DURATION,
+        isClosable: true,
+    };
+
+    const failedCreate = {
+        description: `Failed to create note`,
         status: 'error' as const,
         duration: DEFAULT_DURATION,
         isClosable: true,
@@ -25,6 +32,7 @@ export const noteToasts = (() => {
     return {
         notLoggedIn,
         noteTooShort,
-        failed
+        failedGet,
+        failedCreate
     };
 })();

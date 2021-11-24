@@ -98,3 +98,8 @@ export interface PositionPayload {
     activeIndex: number,
     overIndex: number
 }
+
+export interface UpdatePayload {
+    match: string,
+    note: Note
+}

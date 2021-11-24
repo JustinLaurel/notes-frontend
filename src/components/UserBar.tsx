@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../state/store';
 import { isTokenData } from '../validators/loginValidators';
-import { toggleLoginForm, toggleSignupForm } from '../state/reducers/views';
+import { toggleLoginForm, toggleSignupForm } from '../state/reducers/userFormViews';
 
 import LogoutButton from './login/LogoutButton';
 import LoginButton from './login/LoginButton';
