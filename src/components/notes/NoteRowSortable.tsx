@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { Note } from '../../types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,11 +21,14 @@ const EditTextarea = ({ note }: { note: Note }) => {
 
     const dispatch = useDispatch();
     const [edited, setEdited] = useState(note.content);
+    const textarea = useRef(null);
 
     //When note is sorted, the note parameter changes, but edited maintains its 
     // original note.content's value, before the sort 
     //This line updates the value of edited every time the note is sorted
-    useEffect(() => setEdited(note.content), [note.content]);
+    useEffect(() => {
+        setEdited(note.content);
+    }, [note.content]);
 
 
     const saveNote = (e: React.FormEvent) => {
@@ -37,9 +40,23 @@ const EditTextarea = ({ note }: { note: Note }) => {
         dispatch(editNote(toSave));
     };
 
+    // const [keysPressed, setKeysPressed] = useState([] as string[]);
+    // const handleKeyDown = (event: React.KeyboardEvent) => {
+    //     setKeysPressed([...keysPressed, event.key]);
+    // };
+    // const handleKeyUp = (event: React.KeyboardEvent) => {
+
+    //     if (keysPressed.some(key => key === 'Shift') && event.key === 'Enter') {
+    //         console.log(`keysPressed called`);
+    //     }
+
+    //     setKeysPressed(keysPressed.filter(key => key !== event.key));
+    // };
+
     return (
         <FormControl as="form" onSubmit={saveNote}>
             <Textarea 
+                ref={textarea}
                 as="textarea"
                 id={note._id}
                 style={textareaStyle}
@@ -80,7 +97,6 @@ const NoteRowSortable = ({ note }: { note: Note }) => {
     const content = (
         <Box id={note._id}
             ref={setNodeRef} 
-            whiteSpace="pre"
             {...attributes} 
             {...listeners} 
             style={sortableStyle}>

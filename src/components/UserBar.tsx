@@ -11,7 +11,8 @@ import SignupButton from './signup/SignupButton';
 const NameView = ({ name }: { name: string }) => {
     const spacing = {
         'display': 'inline',
-        'marginLeft': '2px',
+        'marginLeft': '5px',
+        'fontFamily': '"Lato", sans-serif'
     };
 
     return (
@@ -35,7 +36,7 @@ const UserBar = () => {
         'display': 'inline',
         'fontSize': '0.9em',
         'fontStyle': 'italic',
-        'wordSpacing': '-0.1em'
+        'wordSpacing': '-0.1em',
     };
 
     if (isTokenData(token)) {

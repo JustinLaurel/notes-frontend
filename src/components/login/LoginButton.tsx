@@ -1,6 +1,5 @@
 import { Button } from '@chakra-ui/react';
 import React from 'react';
-import { baseMargins } from '../../utils/styles';
 
 interface VisibilityToggler {
     toggleVisibility: () => void 
@@ -18,7 +17,7 @@ const LoginButton = ({ toggleVisibility }: VisibilityToggler) => {
     };
 
     return (
-        <Button {...buttonStyle} {...baseMargins} onClick={handleToggle}>login</Button>
+        <Button {...buttonStyle} onClick={handleToggle}>login</Button>
     );
 };
 

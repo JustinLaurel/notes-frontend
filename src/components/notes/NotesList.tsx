@@ -7,7 +7,6 @@ import { restrictToParentElement, restrictToVerticalAxis } from '@dnd-kit/modifi
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import { Note } from '../../types';
-import { baseMargins } from '../../utils/styles';
 import { Grid } from '@chakra-ui/react';
 
 import { sortNote } from '../../state/reducers/notes';
@@ -21,6 +20,7 @@ const NotesList = () => {
     const dispatch = useDispatch();
 
     const gridStyle = {
+        "mt": "1",
         "templateColumns": "minmax(auto, 600px) 30px 30px",
         "autoRows": "min-max(32px, max-content)",
         "rowGap": "5px",
@@ -46,7 +46,7 @@ const NotesList = () => {
         : notes.map(note => <NoteRowSortable note={note} key={note.position} />);
 
     return (
-        <Grid {...gridStyle} {...baseMargins} {...noteStyle}>
+        <Grid {...gridStyle} {...noteStyle}>
             <DndContext 
             onDragEnd={handleDragEnd} 
             modifiers={[restrictToVerticalAxis, restrictToParentElement]}

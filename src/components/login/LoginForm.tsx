@@ -2,7 +2,6 @@ import React from 'react';
 import { useField, useTimeout } from '../../utils/hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../state/reducers/login';
-import { baseMargins } from '../../utils/styles';
 import { RootState } from '../../state/store';
 import { hideLoginSpinner, showLoginSpinner, toggleLoginForm } from '../../state/reducers/userFormViews';
 import { LoginFormViewFields, TimeoutObject, TokenData } from '../../types';
@@ -45,7 +44,7 @@ const LoginFormView = ({ handleLogin, username, password, showSpinner }: LoginFo
     const CFaLock = chakra(FaLock);
 
     return (
-        <FormControl as="form" onSubmit={handleLogin} {...baseMargins}>
+        <FormControl as="form" onSubmit={handleLogin}>
             <FormLabel as='legend'>Login</FormLabel>
             <Stack spacing={0.5}>
                 <InputGroup {...inputStyle}>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../state/store';
-import { baseMargins } from '../../utils/styles';
 import {
     FormControl,
     InputLeftElement,
@@ -71,7 +70,7 @@ const SignupFormView =
             : <Button {...buttonStyle} gridArea='submit' onSubmit={handleSignup}>sign up</Button>;
 
     return (
-        <FormControl as="form" {...baseMargins} onSubmit={handleSignup}>
+        <FormControl as="form" onSubmit={handleSignup}>
             <Grid {...containerStyle}>
                 <InputGroup {...inputStyle} gridArea='firstName'>
                     <InputLeftElement

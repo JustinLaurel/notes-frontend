@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { ParsedSignupData } from '../types';
 import { isTokenData } from '../validators/loginValidators';
 
-const baseUrl = 'http://localhost:3001/users';
+const baseUrl = '/api/users';
 
 const signup = async (user: ParsedSignupData) => {
     try {

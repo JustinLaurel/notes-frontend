@@ -4,7 +4,6 @@ import { showLoginForm } from '../../state/reducers/userFormViews';
 import { getStoredToken, logout } from '../../state/reducers/login';
 import { RootState } from '../../state/store';
 import { SubmitHandler } from '../../types';
-import { baseMargins } from '../../utils/styles';
 
 import { Button, useToast } from '@chakra-ui/react';
 import { logoutToasts as toasts } from '../../utils/toasts/login';
@@ -12,7 +11,6 @@ import { clearNotes } from '../../state/reducers/notes';
 
 const LogoutButtonView = ({ handleSubmit }: SubmitHandler) => {
     const buttonStyle = {
-        ...baseMargins,
         "size": "xs",
         "fontSize": "12px",
         "borderRadius": "6px",

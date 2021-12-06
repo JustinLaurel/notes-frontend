@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { Note, NewNote, NoteIdPosition } from '../types';
 import { getStoredToken } from '../state/reducers/login';
 
-const baseUrl = 'http://localhost:3001/notes';
+const baseUrl = '/api/notes';
 
 export const UPDATE_POSITION = "POSITION";
 export const UPDATE_CONTENT = "CONTENT";

@@ -21,7 +21,7 @@ const NoteFormView =
         "variant": "filled",
         "borderRadius": "2xl",
         "m": 1.5,
-        "ml": 4,
+        "ml": -0.5,
         "colorScheme": "facebook",
         "autoComplete": "off",
     };

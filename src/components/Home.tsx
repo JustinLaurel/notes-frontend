@@ -1,6 +1,5 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
-import { baseMargins } from '../utils/styles';
 
 const Home = () => {
     const fontStyle = {
@@ -9,7 +8,7 @@ const Home = () => {
     };
 
     return (
-        <Box {...baseMargins} {...fontStyle}>
+        <Box {...fontStyle}>
             <h3><i>Notes app, by Chiew Weng Keat</i></h3>
             <p>
                 &emsp; total notes stored: <br />

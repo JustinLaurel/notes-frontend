@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { Credentials, TokenData } from '../types';
 
-const baseUrl = 'http://localhost:3001/login';
+const baseUrl = '/api/login';
 
 const login = async (credentials: Credentials) => {
     try {

@@ -55,6 +55,14 @@ export const saveTokenToLocalStorage = (token: TokenData) => (dispatch: AppDispa
     });
 };
 
+export const generateAuthHeader = () => {
+    const tokenData = getStoredToken();
+    if (tokenData) {
+        const header = { headers: { 'authorization': tokenData.token }};
+        return header;
+    } else return null;
+};
+
 export const login = (loginInfo: unknown) => async (dispatch: AppDispatch) => {
     const credentials = parseCredentials(loginInfo);
     const token = await loginService.login(credentials);

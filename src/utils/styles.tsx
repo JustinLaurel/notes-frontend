@@ -1,4 +1,4 @@
 export const baseMargins = {
-    "m": 1,
-    "ml": 6
+    "margin": 1,
+    "marginLeft": 6
 };

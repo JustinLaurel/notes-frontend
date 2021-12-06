@@ -103,3 +103,9 @@ export interface UpdatePayload {
     match: string,
     note: Note
 }
+
+export interface Pad {
+    _id: string,
+    content: string,
+    user: string,
+}

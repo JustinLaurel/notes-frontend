@@ -15,6 +15,7 @@ import NavBar from './components/NavBar';
 import Home from './components/Home';
 import NotesList from './components/notes/NotesList';
 import NoteForm from './components/notes/NoteForm';
+import Pad from './components/pad/Pad';
 import LoginForm from './components/login/LoginForm';
 import UserBar from './components/UserBar';
 import SignupForm from './components/signup/SignupForm';
@@ -26,7 +27,7 @@ function App() {
     useEffect(() => {
         try {
             dispatch(initializeNotes());
-            dispatch(saveTokenToState());    
+            dispatch(saveTokenToState());
         } catch(e) {
             console.error(`Network error during notes initialization`);
             toast(noteToasts.failedGet);
@@ -43,6 +44,9 @@ function App() {
                         <Route path='/notes'>
                             <NotesList />
                             <NoteForm />
+                        </Route>
+                        <Route path='/pad'>
+                            <Pad />
                         </Route>
                         <Route path='/'>
                             <Home />
