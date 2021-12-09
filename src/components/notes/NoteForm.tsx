@@ -52,7 +52,12 @@ const NoteForm = () => {
 
     const addNote = (e: React.FormEvent) => {
         e.preventDefault();
-        if (noteInput.value.length < 4) return;
+
+        const MIN_LENGTH = 4;
+        if (noteInput.value.length < MIN_LENGTH) {
+            toast(toasts.noteTooShort(MIN_LENGTH));
+            return;
+        }
         else if (!userIsLoggedIn()) {
             toast(toasts.notLoggedIn);
             return;

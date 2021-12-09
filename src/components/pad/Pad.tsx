@@ -24,7 +24,7 @@ import 'tinymce/icons/default';
 import 'tinymce/skins/ui/oxide/skin.min.css';
 import 'tinymce/skins/ui/oxide/content.min.css';
 import 'tinymce/themes/silver';
-import { Box, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import padService from '../../services/padService';
 import { getPad } from '../../state/reducers/pad';
 import { useSelector } from 'react-redux';
@@ -59,20 +59,21 @@ const Pad = () => {
     };
 
     const editorStyle = {
+        "display": "flex",
+        "flexDirection": "column",
         "mt": 2,
     };
 
     const saveNote = async () => {
         if (editorRef.current) {
             const content = editorRef.current.getContent();
-            const saved = await padService.update(content);
-            console.log(`saved=${JSON.stringify(saved)}`);
+            await padService.update(content);
         }
     };
     const editorRef: React.MutableRefObject<EditorType | null> = useRef(null);
 
     return (
-        <Box {...editorStyle}>
+        <div {...editorStyle}>
             <Editor
                 onInit={(_evt, editor) => { editorRef.current = editor; }}
                 init={{
@@ -90,19 +91,22 @@ const Pad = () => {
                         'undo redo | bold italic |\
                         underline strikethrough | superscript subscript charmap code |\
                         alignleft aligncenter alignright alignjustify |\
-                        bullist numlist outdent indent |\
+                        bullist numlist outdent indent | blockquote |\
                         link image media table | forecolor backcolor |\
-                        removeformat fontsizeselect | save | help',
+                        removeformat fontsizeselect | fontselect | save | help',
                     toolbar_mode: 'wrap',
                     contextmenu: false,
                     content_css: "./pad.css",
-                    width: 1020,
+                    width: 1600,
                     branding: false,
                     image_caption: false,
+                    max_height: 1800,
+                    min_height: 880,
+                    forced_root_block: 'p',
                     save_onsavecallback: saveNote,
                 }}
                 onChange={handleEditorChange} />
-        </Box>
+        </div>
     );
 };
 

@@ -104,7 +104,7 @@ const SignupFormView =
                     <InputLeftElement
                         pointerEvents='none'
                         children={<CFaLock />} />
-                    <Input 
+                    <Input
                         {...password}
                         {...inputStyle}
                         maxlength={MAX_PASSWORD_LENGTH}

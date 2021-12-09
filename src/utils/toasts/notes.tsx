@@ -8,11 +8,13 @@ export const noteToasts = (() => {
         isClosable: true,
     };
 
-    const noteTooShort = {
-        description: 'Note is too short!',
-        status: 'error' as const,
-        duration: DEFAULT_DURATION,
-        isClosable: true
+    const noteTooShort = (minLength: number) => {
+        return {
+            description: `Note needs to be at least ${minLength} characters long`,
+            status: 'error' as const,
+            duration: DEFAULT_DURATION,
+            isClosable: true
+        };
     };
 
     const failedGet = {

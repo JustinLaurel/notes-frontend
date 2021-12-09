@@ -21,7 +21,6 @@ import {
     InputLeftElement,
     chakra,
     Stack,
-    FormLabel
 } from '@chakra-ui/react';
 
 import { FaUserAlt, FaLock } from 'react-icons/fa';
@@ -45,7 +44,6 @@ const LoginFormView = ({ handleLogin, username, password, showSpinner }: LoginFo
 
     return (
         <FormControl as="form" onSubmit={handleLogin}>
-            <FormLabel as='legend'>Login</FormLabel>
             <Stack spacing={0.5}>
                 <InputGroup {...inputStyle}>
                     <InputLeftElement
