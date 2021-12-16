@@ -21,13 +21,13 @@ const NotesList = () => {
 
     const gridStyle = {
         "mt": "1",
-        "templateColumns": "minmax(auto, 600px) 30px 30px",
-        "autoRows": "min-max(32px, max-content)",
+        "templateColumns": "minmax(auto, 37.5rem) 1.875rem 1.875rem",
+        "autoRows": "min-max(2rem, max-content)",
         "rowGap": "5px",
     };
     const noteStyle = {
         'fontFamily': '"Lato",  sans serif',
-        'fontSize': '16px'
+        'fontSize': '1rem'
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

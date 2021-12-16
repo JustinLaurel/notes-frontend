@@ -3,8 +3,8 @@ import React from 'react';
 
 const SkeletonList = ({ rows }: { rows: number }) => {
     const rowStyle = {
-        'height': '26px',
-        'width': '500px',
+        'height': '1.625rem',
+        'width': '31.25rem',
         'alignSelf': 'center'
     };
 

@@ -20,6 +20,7 @@ import 'tinymce/plugins/media';
 import 'tinymce/plugins/table';
 import 'tinymce/plugins/code';
 import 'tinymce/plugins/save';
+import 'tinymce/plugins/importcss';
 import 'tinymce/icons/default';
 import 'tinymce/skins/ui/oxide/skin.min.css';
 import 'tinymce/skins/ui/oxide/content.min.css';
@@ -31,6 +32,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/store';
 import { isPad } from '../../validators/padValidators';
 import { padToasts } from '../../utils/toasts/pad';
+import { getStoredToken } from '../../state/reducers/login';
 
 const Pad = () => {
     const token = useSelector((state: RootState) => state.login);
@@ -72,40 +74,40 @@ const Pad = () => {
     };
     const editorRef: React.MutableRefObject<EditorType | null> = useRef(null);
 
+    const editor = (
+        <Editor
+            onInit={(_evt, editor) => { editorRef.current = editor; }}
+            init={{
+                skin: false,
+                menubar: false,
+                plugins: [
+                    'advlist autolink lists link image',
+                    'charmap print preview anchor help',
+                    'searchreplace visualblocks code importcss',
+                    'insertdatetime media table save',
+                ],
+                statusbar: false,
+                toolbar:
+                    'undo redo | bold italic |\
+                    underline strikethrough | superscript subscript charmap code |\
+                    alignleft aligncenter alignright alignjustify |\
+                    bullist numlist outdent indent | blockquote |\
+                    link image media table | forecolor backcolor |\
+                    removeformat fontsizeselect | fontselect | save | help',
+                toolbar_mode: 'wrap',
+                contextmenu: false,
+                width: 'min(99%, 112.5rem)',
+                height: 'min(56rem, 64rem)',
+                branding: false,
+                image_caption: false,
+                forced_root_block: 'p',
+                save_onsavecallback: saveNote,
+            }}
+            onChange={handleEditorChange} />);
+
     return (
         <div {...editorStyle}>
-            <Editor
-                onInit={(_evt, editor) => { editorRef.current = editor; }}
-                init={{
-                    skin: false,
-                    height: 500,
-                    menubar: false,
-                    plugins: [
-                        'advlist autolink lists link image',
-                        'charmap print preview anchor help',
-                        'searchreplace visualblocks code',
-                        'insertdatetime media table save',
-                    ],
-                    statusbar: false,
-                    toolbar:
-                        'undo redo | bold italic |\
-                        underline strikethrough | superscript subscript charmap code |\
-                        alignleft aligncenter alignright alignjustify |\
-                        bullist numlist outdent indent | blockquote |\
-                        link image media table | forecolor backcolor |\
-                        removeformat fontsizeselect | fontselect | save | help',
-                    toolbar_mode: 'wrap',
-                    contextmenu: false,
-                    content_css: "./pad.css",
-                    width: 1600,
-                    branding: false,
-                    image_caption: false,
-                    max_height: 1800,
-                    min_height: 880,
-                    forced_root_block: 'p',
-                    save_onsavecallback: saveNote,
-                }}
-                onChange={handleEditorChange} />
+            {getStoredToken() ? editor : null}
         </div>
     );
 };

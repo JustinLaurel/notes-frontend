@@ -17,7 +17,7 @@ const NoteFormView =
     const inputStyle = {
         "placeholder": "new note...",
         "size": "sm",
-        "w": 350,
+        "w": "min(95%, 27.5rem)",
         "variant": "filled",
         "borderRadius": "2xl",
         "m": 1.5,
