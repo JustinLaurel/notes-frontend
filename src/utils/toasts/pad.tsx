@@ -1,4 +1,4 @@
-const DEFAULT_DURATION = 3000;
+import { DEFAULT_TOAST_DURATION as DEFAULT_DURATION } from "../../constants";
 
 export const padToasts = (() => {
     const error = {

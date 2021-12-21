@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useToast } from "@chakra-ui/toast";
+import { useToast } from "@chakra-ui/react";
 import { MIN_USERNAME_LENGTH, USERNAME_ERROR } from "../../constants";
 import toasts from '../../utils/toasts/signup';
 import { checkAvailability } from "../../state/reducers/signup";

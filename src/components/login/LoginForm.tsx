@@ -26,18 +26,26 @@ import {
 import { FaUserAlt, FaLock } from 'react-icons/fa';
 
 const LoginFormView = ({ handleLogin, username, password, showSpinner }: LoginFormViewFields) => {
-    const inputStyle = {
-        "size": "sm",
-        "w": 200,
-        "variant": "filled",
-        "borderRadius": "xl",
-    };
+    const styles = (() => {
+        const input = {
+            "size": "sm",
+            "w": 200,
+            "variant": "filled",
+            "borderRadius": "xl",    
+        };
+        const button = {
+            "size": "xs",
+            "bgColor": "blue.300",
+            "display": "inline",
+            "title": "login",
+            "type": "submit" as const,
+        };
 
-    const buttonStyle = {
-        "size": "xs",
-        "bgColor": "blue.300",
-        "display": "inline"
-    };
+        return {
+            input, 
+            button,
+        };
+    })();
 
     const CFaUserAlt = chakra(FaUserAlt);
     const CFaLock = chakra(FaLock);
@@ -45,20 +53,20 @@ const LoginFormView = ({ handleLogin, username, password, showSpinner }: LoginFo
     return (
         <FormControl as="form" onSubmit={handleLogin}>
             <Stack spacing={0.5}>
-                <InputGroup {...inputStyle}>
+                <InputGroup {...styles.input}>
                     <InputLeftElement
                         pointerEvents='none'
                         children={<CFaUserAlt />} />
-                    <Input {...username} {...inputStyle} placeholder='username' /> <br />
+                    <Input {...username} {...styles.input} placeholder='username' /> <br />
                 </InputGroup>
-                <InputGroup {...inputStyle}>
+                <InputGroup {...styles.input}>
                     <InputLeftElement
                         pointerEvents='none'
                         children={<CFaLock />} />
-                    <Input {...password} {...inputStyle} placeholder='password' />
+                    <Input {...password} {...styles.input} placeholder='password' />
                 </InputGroup>
                 <Box>
-                    <Button {...buttonStyle}>login</Button>
+                    <Button {...styles.button}>login</Button>
                     <SpinnerView isVisible={showSpinner}/>
                 </Box>
             </Stack>
@@ -88,7 +96,7 @@ const LoginForm = () => {
     const spinnerVisible = useSelector((state: RootState) => state.userFormViews.loginSpinner);
 
     const username = useField('text');
-    const password = useField('password');    
+    const password = useField('password');
 
     const clearInputFields = () => {
         username.clearField();
@@ -110,6 +118,7 @@ const LoginForm = () => {
     };
 
     const handleLogin = (e: React.FormEvent) => {
+        console.log(`handleLogin called`);
         e.preventDefault();
         const timeout = useTimeout();
 

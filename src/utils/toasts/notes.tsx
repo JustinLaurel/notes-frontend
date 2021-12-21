@@ -1,4 +1,4 @@
-const DEFAULT_DURATION = 3000;
+import { MIN_NOTE_LENGTH, DEFAULT_TOAST_DURATION as DEFAULT_DURATION } from "../../constants";
 
 export const noteToasts = (() => {
     const notLoggedIn = {
@@ -8,9 +8,9 @@ export const noteToasts = (() => {
         isClosable: true,
     };
 
-    const noteTooShort = (minLength: number) => {
+    const noteTooShort = () => {
         return {
-            description: `Note needs to be at least ${minLength} characters long`,
+            description: `Note needs to be at least ${MIN_NOTE_LENGTH} characters long`,
             status: 'error' as const,
             duration: DEFAULT_DURATION,
             isClosable: true

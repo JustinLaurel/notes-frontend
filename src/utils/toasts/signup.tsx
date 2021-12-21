@@ -1,5 +1,4 @@
-const DEFAULT_DURATION = 3000;
-
+import { DEFAULT_TOAST_DURATION as DEFAULT_DURATION } from "../../constants";
 const signupToasts = (() => {
     const failed = (message: string) => {
         return {

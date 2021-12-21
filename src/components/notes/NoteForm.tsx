@@ -8,39 +8,46 @@ import { noteToasts as toasts } from '../../utils/toasts/notes';
 import { UseField } from '../../types';
 import { userIsLoggedIn } from '../../state/reducers/login';
 
+import { MIN_NOTE_LENGTH } from '../../constants';
+
 type FormViewProps = {
     onSubmit(e: React.FormEvent): void,
     noteInput: UseField,
 };
 const NoteFormView = 
     forwardRef<HTMLInputElement, FormViewProps>(({ onSubmit, noteInput }, ref) => {
-    const inputStyle = {
-        "placeholder": "new note...",
-        "size": "sm",
-        "w": "min(95%, 27.5rem)",
-        "variant": "filled",
-        "borderRadius": "2xl",
-        "m": 1.5,
-        "ml": -0.5,
-        "colorScheme": "facebook",
-        "autoComplete": "off",
-    };
+    const styles = (() => {
+        const input = {
+            "placeholder": "new note...",
+            "size": "sm",
+            "w": "min(95%, 27.5rem)",
+            "variant": "filled",
+            "borderRadius": "2xl",
+            "m": 1.5,
+            "ml": -0.5,
+            "colorScheme": "facebook",
+            "autoComplete": "off",
+        };
 
-    const buttonStyle = {
-        "size": "xs",
-        "bgColor": "black",
-        "color": "white",
-        "colorScheme": "twitter",
-        "_hover": {
-            "bgColor": "gray.600"
-        },
-        "title": "save new note"
-    };
+        const button = {
+            "size": "xs",
+            "bgColor": "black",
+            "color": "white",
+            "colorScheme": "twitter",
+            "_hover": {
+                "bgColor": "gray.600"
+            },
+            "title": "save new note",
+            "type": "submit" as const,
+        };
+
+        return {input, button};
+    })();
 
     return (
         <FormControl as="form" onSubmit={onSubmit}>
-            <Input ref={ref} {...inputStyle} {...noteInput}></Input>
-            <Button {...buttonStyle}>save</Button>
+            <Input ref={ref} {...styles.input} {...noteInput}></Input>
+            <Button {...styles.button}>save</Button>
         </FormControl>
     );
 });
@@ -50,18 +57,23 @@ const NoteForm = () => {
     const dispatch = useDispatch();
     const toast = useToast();
 
+    const checkAndNotifyIfNoteIsInvalid = () => {
+        if (noteInput.value.length < MIN_NOTE_LENGTH) {
+            toast(toasts.noteTooShort());
+            return false;
+        } else if (!userIsLoggedIn()) {
+            toast(toasts.notLoggedIn);
+            return false;
+        }
+
+        return true;
+    };
+
     const addNote = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const MIN_LENGTH = 4;
-        if (noteInput.value.length < MIN_LENGTH) {
-            toast(toasts.noteTooShort(MIN_LENGTH));
-            return;
-        }
-        else if (!userIsLoggedIn()) {
-            toast(toasts.notLoggedIn);
-            return;
-        } 
+        const noteIsValid = checkAndNotifyIfNoteIsInvalid();
+        if (!noteIsValid) return;
 
         try {
             dispatch(createNote(noteInput.value));

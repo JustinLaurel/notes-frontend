@@ -60,16 +60,16 @@ interface TooltipsFields {
 }
 
 const PasswordTooltips = ({ password }: TooltipsFields) => {
-    const [characterIsValid, setCharacterValid] = useState(false);
-    const [numberIsValid, setNumberValid] = useState(false);
-    const [letterIsValid, setLetterValid] = useState(false);
+    const [characterIsValid, setCharacterValidity] = useState(false);
+    const [numberIsValid, setNumberValidity] = useState(false);
+    const [letterIsValid, setLetterValidity] = useState(false);
 
     useEffect(() => {
-        setCharacterValid(
+        setCharacterValidity(
             hasAtLeastXCharacters(password, MIN_PASSWORD_LENGTH));
-        setNumberValid(
+        setNumberValidity(
             hasAtLeastOneNumber(password));
-        setLetterValid(
+        setLetterValidity(
             hasAtLeastOneLetter(password));
     }, [password]);
 

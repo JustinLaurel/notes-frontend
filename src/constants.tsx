@@ -5,6 +5,9 @@ export const MAX_USERNAME_LENGTH = 24 as number;
 export const MIN_USERNAME_LENGTH = 6 as number;
 export const MAX_PASSWORD_LENGTH = 18 as number;
 
+export const MIN_NOTE_LENGTH = 4 as number;
+export const DEFAULT_TOAST_DURATION = 3000;
+
 export const USERNAME_ERROR = `Username must have at least ${MIN_USERNAME_LENGTH} characters`;
 export const NAME_ERROR = `You must have a first and a last name`;
 export const PASSWORD_ERROR = `Invalid password format`;

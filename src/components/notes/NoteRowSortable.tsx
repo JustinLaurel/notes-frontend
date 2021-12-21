@@ -40,19 +40,6 @@ const EditTextarea = ({ note }: { note: Note }) => {
         dispatch(editNote(toSave));
     };
 
-    // const [keysPressed, setKeysPressed] = useState([] as string[]);
-    // const handleKeyDown = (event: React.KeyboardEvent) => {
-    //     setKeysPressed([...keysPressed, event.key]);
-    // };
-    // const handleKeyUp = (event: React.KeyboardEvent) => {
-
-    //     if (keysPressed.some(key => key === 'Shift') && event.key === 'Enter') {
-    //         console.log(`keysPressed called`);
-    //     }
-
-    //     setKeysPressed(keysPressed.filter(key => key !== event.key));
-    // };
-
     return (
         <FormControl as="form" onSubmit={saveNote}>
             <Textarea 
